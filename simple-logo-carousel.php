@@ -3,7 +3,7 @@
 Plugin Name: Simple Logo Carousel
 Plugin URI: https://productivelaziness.com/products/simple-logo-carousel/
 Description: A simplistic carousel to elegantly display logos. Powered by <a href="http://kenwheeler.github.io/slick/">slick</a>.
-Version: 1.6
+Version: 1.5
 Author: Productive Laziness LLC
 Author URI: https://productivelaziness.com
 License: GPLv2 or later

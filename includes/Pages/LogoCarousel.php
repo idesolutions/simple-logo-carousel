@@ -128,7 +128,6 @@ class LogoCarousel extends BaseController
                 wp_enqueue_script('wp-color-picker');
                 wp_add_inline_script('wp-color-picker', 'jQuery(document).ready(function($){$(".color-field").each( function() {$(this).wpColorPicker();});});');
                 wp_enqueue_script('admin_logo_display_options_slc_script', $this->plugin_url . 'assets/admin/js/slc-admin-logo-display-options.js', array('jquery'));
-                wp_add_inline_script('admin_logo_display_options_slc_script', 'let contentUrl="' . content_url() . '";');
             }
         }
     }

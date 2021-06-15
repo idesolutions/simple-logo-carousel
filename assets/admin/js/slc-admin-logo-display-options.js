@@ -6,31 +6,28 @@ jQuery(document).ready(function () {
         e.preventDefault();
 
         // clone the first row
-        let row = jQuery('#slc-logo-display-options-table > tbody.slc-main-tbody > tr:first-child').clone();
+        let row = jQuery('#slc-logo-display-options-table > tbody > tr:first-child').clone();
 
         // reset all values
         row.find('input.breakpoint').val('').attr('required', 'required');
         row.find('input.slides-to-show').val('1');
         row.find('input.slides-to-scroll').val('1');
         row.find('span.default').remove();
-        row.find('td:first-child').append('<img class="slc-sort-btn" src="' + contentUrl + '/plugins/trunk/assets/admin/images/sort-solid.svg">')
-        row.attr('data-id', null);
-        row.addClass('slc-draggable');
 
         // add a row to the table
-        jQuery('#slc-logo-display-options-table > tbody.slc-main-tbody').append(row);
+        jQuery('#slc-logo-display-options-table > tbody').append(row);
         DataToJsonString();
     });
 
     // if the sort breakpoint button is clicked on
     jQuery('#sort-breakpoint-btn').on('click', function (e) {
         e.preventDefault();
-        let rows = jQuery('#slc-logo-display-options-table > tbody.slc-main-tbody > tr');
+        let rows = jQuery('#slc-logo-display-options-table > tbody > tr');
 
         // for each row entry
         rows.each(function (e) {
             // if this row has the default span
-            if (jQuery(this).find('span.default').length === 0) {
+            if (jQuery(this).find('span.default').length == 0) {
                 // assign the breakpoint to this row
                 jQuery(this).attr('data-id', jQuery(this).find('input.breakpoint').val());
             } else {
@@ -50,7 +47,7 @@ jQuery(document).ready(function () {
 
         // append the row in order
         jQuery.each(rows, function (index, row) {
-            jQuery('#slc-logo-display-options-table > tbody.slc-main-tbody').append(row);
+            jQuery('#slc-logo-display-options-table > tbody').append(row);
         });
 
         // update json data
@@ -79,9 +76,9 @@ jQuery(document).ready(function () {
         let data = [];
 
         // for each row entry
-        jQuery('#slc-logo-display-options-table > tbody.slc-main-tbody > tr').each(function (e) {
+        jQuery('#slc-logo-display-options-table > tbody > tr').each(function (e) {
             // if this row has the default span
-            if (jQuery(this).find('span.default').length === 0) {
+            if (jQuery(this).find('span.default').length == 0) {
                 data.push({
                     breakpoint: jQuery(this).find('input.breakpoint').val(),
                     show: jQuery(this).find('input.slides-to-show').val(),
@@ -104,18 +101,18 @@ jQuery(document).ready(function () {
     slcCarouselLogoDisplayOptions.val(slcCarouselLogoDisplayOptions.val().trim());
 
     // on sort click and hold
-    jQuery('#slc-logo-display-options-table > tbody.slc-main-tbody').on('mousedown touchstart', 'tr.slc-draggable  > td:first-child', function () {
-        jQuery('#slc-logo-display-options-table > tbody.slc-main-tbody').sortable('enable');
+    jQuery('#slc-logo-display-options-table tbody > tr  > td:first-child').on('mousedown touchstart', function () {
+        jQuery('#slc-logo-display-options-table > tbody').sortable('enable');
     }).bind('mouseup mouseleave touchend', function () {
-        jQuery('#slc-logo-display-options-table > tbody.slc-main-tbody').sortable('disable');
+        jQuery('#slc-logo-display-options-table > tbody').sortable('disable');
     });
 
     // initiate and disable sortable on load
-    jQuery('#slc-logo-display-options-table > tbody.slc-main-tbody').sortable({
-        items: 'tr.slc-draggable',
+    jQuery('#slc-logo-display-options-table > tbody').sortable({
+        items: 'tr[data-id!=default]',
         update: function () {
             DataToJsonString();
         },
     });
-    jQuery('#slc-logo-display-options-table > tbody.slc-main-tbody').sortable('disable');
+    jQuery('#slc-logo-display-options-table > tbody').sortable('disable');
 });

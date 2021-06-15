@@ -21,7 +21,7 @@ $slcLogoDisplayOptions = get_post_meta($post->ID, 'slc_carousel_logo_display_opt
         <th></th>
     </tr>
     </thead>
-    <tbody class="slc-main-tbody">
+    <tbody>
     <?php if (empty($slcLogoDisplayOptions)) { ?>
         <tr data-id="default">
             <td></td>
@@ -63,8 +63,7 @@ $slcLogoDisplayOptions = get_post_meta($post->ID, 'slc_carousel_logo_display_opt
 
         foreach ($breakpoints as $breakpoint) {
             ?>
-            <tr <?php if ($breakpoint->breakpoint == 'default') { ?>data-id="default"
-                <?php } else { ?>class="slc-draggable"<?php } ?>>
+            <tr <?php if ($breakpoint->breakpoint == 'default') { ?>data-id="default"<?php } ?>>
                 <td>
                     <?php if ($breakpoint->breakpoint != 'default') { ?>
                         <img class="slc-sort-btn"

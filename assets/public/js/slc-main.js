@@ -14,7 +14,7 @@ jQuery(document).ready(function () {
         // for each breakpoint in our params
         jQuery(params['breakpoints']).each(function (e) {
             // if this breakpoint is the default
-            if (this.breakpoint === 'default') {
+            if (this.breakpoint == 'default') {
                 initialSlidesToShow = parseInt(this.show);
                 initialSlidesToScroll = parseInt(this.scroll);
             } else {

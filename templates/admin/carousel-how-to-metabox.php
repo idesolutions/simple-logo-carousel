@@ -1,5 +1,5 @@
 <img class="slc-how-to-image"
-     src="<?php echo $this->plugin_url . 'assets/admin/images/simple-logo-carousel-logo.svg' ?>"/>
+     src="<?php echo $this->plugin_url . 'assets/admin/images/simple-logo-carousel-logo.png' ?>"/>
 <p><?php _e('To create a logo carousel, follow the steps below:', 'simple-logo-carousel'); ?></p>
 <h4><?php _e('1. Add Your Logos', 'simple-logo-carousel'); ?></h4>
 <p><?php _e('To add a logo, located the left-hand sidebar and hover over', 'simple-logo-carousel'); ?>

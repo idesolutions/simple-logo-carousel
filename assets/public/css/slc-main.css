@@ -48,11 +48,11 @@ https://www.solodev.com/blog/web-design/adding-an-infinite-client-logo-carousel-
     display: none;
 }
 
-.slc-logos .slick-slide {
+.slick-slide {
     margin: 0px 20px;
 }
 
-.slc-logos.slick-slider {
+.slick-slider {
     position: relative;
     display: block;
     box-sizing: border-box;
@@ -67,17 +67,17 @@ https://www.solodev.com/blog/web-design/adding-an-infinite-client-logo-carousel-
     -webkit-tap-highlight-color: transparent;
 }
 
-.slc-logos .slick-slide > div {
+.slick-slide > div {
     display: table-cell;
     vertical-align: middle;
     text-align: center;
 }
 
-.slc-logos .slick-slide {
+.slick-slide {
     display: table !important;
 }
 
-.slc-logos .slick-list {
+.slick-list {
     position: relative;
     display: block;
     overflow: hidden;
@@ -85,16 +85,16 @@ https://www.solodev.com/blog/web-design/adding-an-infinite-client-logo-carousel-
     padding: 0;
 }
 
-.slc-logos .slick-list:focus {
+.slick-list:focus {
     outline: none;
 }
 
-.slc-logos .slick-list.dragging {
+.slick-list.dragging {
     cursor: pointer;
     cursor: hand;
 }
 
-.slc-logos.slick-slider .slick-track, .slc-logos.slick-slider .slick-list {
+.slick-slider .slick-track, .slick-slider .slick-list {
     -webkit-transform: translate3d(0, 0, 0);
     -moz-transform: translate3d(0, 0, 0);
     -ms-transform: translate3d(0, 0, 0);
@@ -102,27 +102,27 @@ https://www.solodev.com/blog/web-design/adding-an-infinite-client-logo-carousel-
     transform: translate3d(0, 0, 0);
 }
 
-.slc-logos .slick-track {
+.slick-track {
     position: relative;
     top: 0;
     left: 0;
     display: block;
 }
 
-.slc-logos .slick-track:before, .slc-logos .slick-track:after {
+.slick-track:before, .slick-track:after {
     display: table;
     content: '';
 }
 
-.slc-logos .slick-track:after {
+.slick-track:after {
     clear: both;
 }
 
-.slc-logos .slick-loading .slick-track {
+.slick-loading .slick-track {
     visibility: hidden;
 }
 
-.slc-logos .slick-slide {
+.slick-slide {
     display: none;
     float: left;
     height: 100%;
@@ -133,38 +133,38 @@ https://www.solodev.com/blog/web-design/adding-an-infinite-client-logo-carousel-
     float: right;
 }
 
-.slc-logos .slick-slide img {
+.slick-slide img {
     display: block;
 }
 
-.slc-logos .slick-slide.slick-loading img {
+.slick-slide.slick-loading img {
     display: none;
 }
 
-.slc-logos .slick-slide.dragging img {
+.slick-slide.dragging img {
     pointer-events: none;
 }
 
-.slc-logos.slick-initialized .slick-slide {
+.slick-initialized .slick-slide {
     display: block;
 }
 
-.slc-logos.slick-loading .slick-slide {
+.slick-loading .slick-slide {
     visibility: hidden;
 }
 
-.slc-logos .slick-vertical .slick-slide {
+.slick-vertical .slick-slide {
     display: block;
     height: auto;
     border: 1px solid transparent;
 }
 
-.slc-logos .slick-arrow.slick-hidden {
+.slick-arrow.slick-hidden {
     display: none;
 }
 
-.slc-logos button.slick-prev.slick-arrow,
-.slc-logos button.slick-next.slick-arrow {
+button.slick-prev.slick-arrow,
+button.slick-next.slick-arrow {
     padding: 0;
     top: 50%;
     position: absolute;
@@ -174,21 +174,21 @@ https://www.solodev.com/blog/web-design/adding-an-infinite-client-logo-carousel-
     outline: none;
 }
 
-.slc-logos button.slick-prev.slick-arrow:hover,
-.slc-logos button.slick-next.slick-arrow:hover {
+button.slick-prev.slick-arrow:hover,
+button.slick-next.slick-arrow:hover {
     padding: 0;
     background-color: transparent;
     text-decoration: none;
     outline: none;
 }
 
-.slc-logos .slc-logo-title {
+.slc-logo-title {
     margin-top: 15px;
     text-display: none;
 }
 
-.slc-logos img.slick-prev.slick-custom-arrow.slick-arrow,
-.slc-logos img.slick-next.slick-custom-arrow.slick-arrow {
+img.slick-prev.slick-custom-arrow.slick-arrow,
+img.slick-next.slick-custom-arrow.slick-arrow {
     padding: 0;
     top: 50%;
     position: absolute;
@@ -197,12 +197,12 @@ https://www.solodev.com/blog/web-design/adding-an-infinite-client-logo-carousel-
     z-index: 5;
 }
 
-.slc-logos img.slick-prev.slick-custom-arrow.slick-arrow {
+img.slick-prev.slick-custom-arrow.slick-arrow {
     left: 0;
     transform: translateY(-50%);
 }
 
-.slc-logos img.slick-next.slick-custom-arrow.slick-arrow {
+img.slick-next.slick-custom-arrow.slick-arrow {
     right: 0;
     transform: translateY(-50%);
 }

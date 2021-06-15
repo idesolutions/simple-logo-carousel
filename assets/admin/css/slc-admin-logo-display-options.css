@@ -23,7 +23,7 @@
 }
 
 .slc-how-to-image {
-    max-width: 300px;
+    max-width: 100%;
     width: 80%;
     margin: 0 auto;
     display: block;

@@ -1,10 +1,10 @@
 === Simple Logo Carousel ===
 Contributors: tvledesign
 Tags: logo carousel, logo slider, carousel, slider
-Requires at least: 5.0
-Tested up to: 5.7.2
+Requires at least: 4.9
+Tested up to: 5.4.2
 Requires PHP: 5.6
-Stable tag: 1.6
+Stable tag: 1.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,15 +47,6 @@ No. Simple Logo Carousel is a free plugin and at this time, will not have a prem
 6. View of the logo carousel on the website.
 
 == Changelog ==
-= 1.6 =
-
-* Updated main stylesheet so styles only apply to plugin's carousels in case slick is being used elsewhere.
-* Made minor edits in admin and public JavaScript files where "==" is now "===".
-* Updated plugin logo.
-* Fixed it so sort icon shows up when adding new breakpoints in the Logo Display Options.
-* Fixed it so you can drag and drop newly made breakpoints without reloading the page in the Logo Display Options.
-* Updated drag and drop functionality to prevent dragging rows into each other by accident.
-
 = 1.5 =
 
 * Plugin recoded to add composer autoload support for better organization.
