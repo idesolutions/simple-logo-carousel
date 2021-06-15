@@ -1,0 +1,140 @@
+#slc-logo-display-options-table {
+    width: 100%;
+    border: #ccd0d4 solid 1px;
+    margin: 15px 0;
+    border-collapse: collapse;
+}
+
+#slc-logo-display-options-table > tbody > tr > td:last-child {
+    text-align: center;
+    background-color: #F9F9F9;
+}
+
+#slc-logo-display-options-table .slc-required {
+    color: #ff0000;
+}
+
+#slc-logo-display-options-footer {
+    text-align: right;
+}
+
+#slc-carousel-logo-display-options {
+    display: none;
+}
+
+.slc-how-to-image {
+    max-width: 300px;
+    width: 80%;
+    margin: 0 auto;
+    display: block;
+}
+
+#slc-logo-display-options-table .slc-sort-btn {
+    width: 10px;
+    cursor: pointer;
+}
+
+#slc-logo-display-options-table .delete-row {
+    width: 20px;
+    height: 20px;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 50%;
+    border: 1px solid #ccd0d4;
+    box-sizing: border-box;
+    position: relative;
+    color: #ccd0d4;
+}
+
+#slc-logo-display-options-table .delete-row span {
+    position: absolute;
+    font-size: 25px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    line-height: 8px;
+    padding-bottom: 6px;
+}
+
+#slc-logo-display-options-table .delete-row:hover {
+    background-color: #ff0000;
+    border-color: #ff0000;
+}
+
+#slc-logo-display-options-table .delete-row:hover span {
+    color: #fff;
+}
+
+#slc-logo-display-options-table thead th {
+    text-align: left;
+    padding: 8px;
+    border-color: #d5d9dd;
+    border-width: 0 0 1px 1px;
+    border-style: solid;
+}
+
+#slc-logo-display-options-table thead th:nth-of-type(4n+2) {
+    width: 125px;
+}
+
+#slc-logo-display-options-table thead th:last-child,
+#slc-logo-display-options-table > tbody > tr > td:last-child {
+    width: 20px;
+}
+
+#slc-logo-display-options-table > tbody > tr > td:nth-of-type(4n+2) input {
+    max-width: 100%;
+    width: 80%;
+}
+
+#slc-logo-display-options-table > tbody > tr > td:nth-of-type(4n+2) span {
+    vertical-align: bottom;
+}
+
+#slc-logo-display-options-table > tbody > tr > td {
+    padding: 8px 8px 18px;
+    border-color: #d5d9dd;
+    border-width: 0 0 1px 1px;
+    border-style: solid;
+}
+
+#slc-logo-display-options-table > thead > tr,
+#slc-logo-display-options-table > tbody > tr {
+    background-color: #fff;
+}
+
+#slc-logo-display-options-table > thead > tr > th:first-child,
+#slc-logo-display-options-table > tbody > tr > td:first-child {
+    width: 28px;
+    text-align: center;
+}
+
+#slc-logo-display-options-table > tbody > tr > td:first-child {
+    background-color: #F9F9F9;
+    cursor: pointer;
+}
+
+#slc-logo-display-options-table > tbody > tr:first-child > td:first-child {
+    cursor: default;
+}
+
+#slc-logo-display-options-table > tbody > tr:first-child .delete-row {
+    display: none;
+    pointer-events: none;
+}
+
+#slc-logo-display-options-table > tbody > tr > td:nth-of-type(4n+2),
+#slc-logo-display-options-table > tbody > tr > td:nth-of-type(4n+2) {
+    width: 145px;
+}
+
+#slc-logo-display-options-table > tbody > tr:first-child > td:nth-of-type(4n+2) input,
+#slc-logo-display-options-table > tbody > tr:first-child > td:nth-of-type(4n+2) span.size {
+    display: none;
+}
+
+#slc-logo-display-options-table .ui-sortable-helper {
+    display: table;
+    border: #ccd0d4 solid 1px;
+}
