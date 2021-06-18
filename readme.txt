@@ -55,6 +55,7 @@ No. Simple Logo Carousel is a free plugin and at this time, will not have a prem
 * Fixed it so sort icon shows up when adding new breakpoints in the Logo Display Options.
 * Fixed it so you can drag and drop newly made breakpoints without reloading the page in the Logo Display Options.
 * Updated drag and drop functionality to prevent dragging rows into each other by accident.
+* Dropped support for PHP 5.6 and lower.
 
 = 1.5 =
 

@@ -13,7 +13,7 @@ jQuery(document).ready(function () {
         row.find('input.slides-to-show').val('1');
         row.find('input.slides-to-scroll').val('1');
         row.find('span.default').remove();
-        row.find('td:first-child').append('<img class="slc-sort-btn" src="' + contentUrl + '/plugins/trunk/assets/admin/images/sort-solid.svg">')
+        row.find('td:first-child').append('<img class="slc-sort-btn" src="' + contentUrl + '/assets/admin/images/sort-solid.svg">')
         row.attr('data-id', null);
         row.addClass('slc-draggable');
 
