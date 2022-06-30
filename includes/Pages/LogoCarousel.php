@@ -4,7 +4,7 @@
  * Manages and handles everything relating to the logo post type
  * view which also includes rendering and saving the page data
  *
- * @package productive-laziness/simple-logo-carousel
+ * @package ide-interactive/simple-logo-carousel
  */
 
 namespace PLSimpleLogoCarousel\Pages;
@@ -35,6 +35,26 @@ class LogoCarousel extends BaseController
             'slc_cpt_carousel_shortcode',
             __('Shortcode', 'simple-logo-carousel'),
             array($this, 'carousel_shortcode'),
+            'slc_carousel',
+            'normal',
+            'default'
+        );
+
+        // metabox for preview
+        add_meta_box(
+            'slc_cpt_carousel_preview',
+            __('Preview', 'simple-logo-carousel'),
+            array($this, 'carousel_preview'),
+            'slc_carousel',
+            'normal',
+            'default'
+        );
+
+        // metabox for logo display order
+        add_meta_box(
+            'slc_cpt_carousel_logo_display_order',
+            __('Logo Display Order', 'simple-logo-carousel'),
+            array($this, 'carousel_logo_display_order'),
             'slc_carousel',
             'normal',
             'default'
@@ -80,6 +100,22 @@ class LogoCarousel extends BaseController
     }
 
     /**
+     * renders the carousel preview
+     */
+    function carousel_preview()
+    {
+        require_once $this->plugin_path . 'templates/admin/carousel-preview-metabox.php';
+    }
+
+    /**
+     * renders the carousel logo display order
+     */
+    function carousel_logo_display_order()
+    {
+        require_once $this->plugin_path . 'templates/admin/carousel-logo-display-order-metabox.php';
+    }
+
+    /**
      * renders the carousel shortcode metabox
      */
     function carousel_shortcode()
@@ -118,6 +154,8 @@ class LogoCarousel extends BaseController
             if ($hook == 'post-new.php' || $hook == 'post.php' && $post->post_type == 'slc_carousel') {
                 wp_enqueue_style('admin_slc_stylesheet', $this->plugin_url . 'assets/admin/css/slc-admin.css');
                 wp_enqueue_style('admin_logo_display_options_slc_stylesheet', $this->plugin_url . 'assets/admin/css/slc-admin-logo-display-options.css');
+                wp_enqueue_style('admin_logo_display_order_slc_stylesheet', $this->plugin_url . 'assets/admin/css/slc-admin-logo-display-order.css');
+                wp_enqueue_style('admin_logo_preview_slc_stylesheet', $this->plugin_url . 'assets/admin/css/slc-admin-preview.css');
             }
 
             // if we are in the carousel custom post type and not the logo custom post type
@@ -128,7 +166,13 @@ class LogoCarousel extends BaseController
                 wp_enqueue_script('wp-color-picker');
                 wp_add_inline_script('wp-color-picker', 'jQuery(document).ready(function($){$(".color-field").each( function() {$(this).wpColorPicker();});});');
                 wp_enqueue_script('admin_logo_display_options_slc_script', $this->plugin_url . 'assets/admin/js/slc-admin-logo-display-options.js', array('jquery'));
+                wp_enqueue_script('admin_logo_display_order_slc_script', $this->plugin_url . 'assets/admin/js/slc-admin-logo-display-order.js', array('jquery'));
                 wp_add_inline_script('admin_logo_display_options_slc_script', 'let contentUrl="' . $this->plugin_url . '";');
+                wp_enqueue_script('slc_slick_js', esc_url($this->plugin_url . 'assets/public/libs/slick/slick.min.js'), true);
+                wp_localize_script('slc_slick_js', 'slc_carousel_params_' . $post->ID, $this->get_carousel_options($post->ID));
+                wp_enqueue_script('slc_main_js', esc_url($this->plugin_url . 'assets/public/js/slc-main.js'), true);
+                wp_enqueue_style('slc_main_css', esc_url($this->plugin_url . 'assets/public/css/slc-main.css'));
+                wp_add_inline_style('slc_main_css', $this->get_carousel_css($post->ID));
             }
         }
     }
@@ -156,6 +200,12 @@ class LogoCarousel extends BaseController
             update_post_meta($post->ID, 'slc_carousel_logo_display_options', '[{"breakpoint": "default", "show": 1, "scroll": 1}]');
         } else {
             update_post_meta($post->ID, 'slc_carousel_logo_display_options', sanitize_text_field($_POST['slc_carousel_logo_display_options']));
+        }
+
+        if (empty($_POST['slc_carousel_logo_display_order'])) {
+            update_post_meta($post->ID, 'slc_carousel_logo_display_order', '');
+        } else {
+            update_post_meta($post->ID, 'slc_carousel_logo_display_order', sanitize_text_field($_POST['slc_carousel_logo_display_order']));
         }
 
         update_post_meta($post->ID, 'slc_carousel_show_title', sanitize_text_field($_POST['slc_carousel_show_title']));
@@ -307,5 +357,102 @@ class LogoCarousel extends BaseController
             // output the shortcode
             echo '<input type="text" value="[simple-logo-carousel id=' . $post_id . ']" style="min-width:245px;" readonly />';
         }
+    }
+
+    /**
+     * get our inline css
+     *
+     * @param $id
+     * @return string
+     */
+    function get_carousel_css($id)
+    {
+        // get our carousel options
+        $titleColor = get_post_meta($id, 'slc_carousel_title_color', true);
+        $hoverTextColor = get_post_meta($id, 'slc_carousel_hover_text_color', true);
+        $hoverTextBackgroundColor = get_post_meta($id, 'slc_carousel_hover_text_background_color', true);
+        $hoverTextBackgroundColorOpacity = get_post_meta($id, 'slc_carousel_hover_text_background_color_opacity', true);
+        $slideVerticalAlignment = get_post_meta($id, 'slc_carousel_slide_vertical_alignment', true);
+        $arrowImageMaxWidth = get_post_meta($id, 'slc_carousel_arrow_image_max_width', true);
+        $arrowColor = get_post_meta($id, 'slc_carousel_arrow_color', true);
+        $arrowSize = get_post_meta($id, 'slc_carousel_arrow_size', true);
+        $arrowOffset = get_post_meta($id, 'slc_carousel_arrow_offset', true);
+
+        // create our css output
+        $cssOutput = ".slc-carousel-id-{$id} .slc-logo-title { color: {$titleColor}; } .slc-carousel-id-{$id}.slc-logos { padding: 0 } .slc-carousel-id-{$id} .slc-hover-text { color: {$hoverTextColor}; } .slc-carousel-id-{$id} .slc-logo-container:before { background-color: {$hoverTextBackgroundColor}; opacity: {$hoverTextBackgroundColorOpacity}; } .slc-carousel-id-{$id}.slick-initialized .slick-track { display: flex; align-items: {$slideVerticalAlignment}; }";
+
+        if (get_post_meta($id, 'slc_carousel_custom_arrows', true) == 'false') {
+            $cssOutput .= " .slc-carousel-id-{$id} .slick-prev { font-size: {$arrowSize}; line-height: {$arrowSize}; color: {$arrowColor}; margin-top: calc(-{$arrowSize}/2); left:{$arrowOffset} } .slc-carousel-id-{$id} .slick-next { font-size: {$arrowSize}; line-height: {$arrowSize}; color: {$arrowColor}; margin-top: calc(-{$arrowSize}/2); right:{$arrowOffset} }";
+        } else {
+            $cssOutput .= " .slc-carousel-id-{$id} .slick-prev.slick-custom-arrow, .slc-carousel-id-{$id} .slick-next.slick-custom-arrow { max-width: {$arrowImageMaxWidth} } .slc-carousel-id-{$id} .slick-prev { left:{$arrowOffset} } .slc-carousel-id-{$id} .slick-next { right:{$arrowOffset} }";
+        }
+
+        // return our css output
+        return $cssOutput;
+    }
+
+    /**
+     * get our carousel options
+     *
+     * @param $id
+     * @return array
+     */
+    function get_carousel_options($id)
+    {
+        // get our carousel options
+        $autoplay = get_post_meta($id, 'slc_carousel_autoplay', true);
+        $autoplaySpeed = get_post_meta($id, 'slc_carousel_autoplay_speed', true);
+        $arrows = get_post_meta($id, 'slc_carousel_arrows', true);
+        $prevArrow = '<button type="button" class="slick-prev">&#x276C;</button>';
+        $nextArrow = '<button type="button" class="slick-next">&#x276D;</button>';
+
+        // if we are using custom arrows
+        if (get_post_meta($id, 'slc_carousel_custom_arrows', true) != 'false') {
+            $prevArrow = '<img src="' . get_post_meta($id, 'slc_carousel_left_arrow_image', true) . '" class="slick-prev slick-custom-arrow" alt="' . __('Arrow to go to previous logo on carousel.', 'simple-logo-carousel') . '"/>';
+            $nextArrow = '<img src="' . get_post_meta($id, 'slc_carousel_right_arrow_image', true) . '" class="slick-next slick-custom-arrow" alt="' . __('Arrow to go to next logo on carousel.', 'simple-logo-carousel') . '"/>';
+        }
+
+        $centerMode = get_post_meta($id, 'slc_carousel_center_mode', true);
+        $cssEase = get_post_meta($id, 'slc_carousel_animation', true);
+        $draggable = get_post_meta($id, 'slc_carousel_draggable', true);
+        $pauseOnFocus = get_post_meta($id, 'slc_carousel_pause_on_focus', true);
+        $pauseOnHover = get_post_meta($id, 'slc_carousel_pause_on_hover', true);
+        $speed = get_post_meta($id, 'slc_carousel_speed', true);
+        $swipe = get_post_meta($id, 'slc_carousel_swipe', true);
+
+        // add our carousel options into an array
+        $options['options'] = array(
+            'autoplay' => $autoplay == 'true',
+            'autoplaySpeed' => intval($autoplaySpeed),
+            'arrows' => $arrows == 'true',
+            'prevArrow' => $prevArrow,
+            'nextArrow' => $nextArrow,
+            'centerMode' => $centerMode == 'true',
+            'cssEase' => $cssEase,
+            'draggable' => $draggable == 'true',
+            'pauseOnFocus' => $pauseOnFocus == 'true',
+            'pauseOnHover' => $pauseOnHover == 'true',
+            'speed' => intval($speed),
+            'swipe' => $swipe == 'true'
+        );
+
+        // get our logo display options
+        $logoDisplayOptions = get_post_meta($id, 'slc_carousel_logo_display_options', true);
+
+        if ($logoDisplayOptions) {
+            $breakpoints = json_decode($logoDisplayOptions);
+
+            // for each breakpoint add it to the options array
+            foreach ($breakpoints as $breakpoint) {
+                $options['breakpoints'][] = array(
+                    'breakpoint' => $breakpoint->breakpoint,
+                    'show' => $breakpoint->show,
+                    'scroll' => $breakpoint->scroll
+                );
+            }
+        }
+
+        // return our options object
+        return $options;
     }
 }

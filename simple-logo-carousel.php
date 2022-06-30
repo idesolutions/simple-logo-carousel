@@ -1,11 +1,11 @@
 <?php
 /* 
 Plugin Name: Simple Logo Carousel
-Plugin URI: https://productivelaziness.com/products/simple-logo-carousel/
+Plugin URI: https://www.ideinteractive.com/products/content-audit-exporter/
 Description: A simplistic carousel to elegantly display logos. Powered by <a href="http://kenwheeler.github.io/slick/">slick</a>.
-Version: 1.6
-Author: Productive Laziness LLC
-Author URI: https://productivelaziness.com
+Version: 1.7
+Author: IDE Interactive
+Author URI: https://www.ideinteractive.com/
 License: GPLv2 or later
 License URI:  https://www.gnu.org/licenses/gpl-2.0.html
 

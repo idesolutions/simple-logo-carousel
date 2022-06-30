@@ -3,12 +3,10 @@
 /**
  * Registers our default settings
  *
- * @package productive-laziness/simple-logo-carousel
+ * @package ide-interactive/simple-logo-carousel
  */
 
 namespace PLSimpleLogoCarousel\Base;
-
-use PLSimpleLogoCarousel\Base\BaseController;
 
 class DefaultSettings extends BaseController
 {

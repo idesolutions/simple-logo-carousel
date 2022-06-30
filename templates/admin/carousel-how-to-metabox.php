@@ -19,6 +19,9 @@
 <p><?php _e('Then select your categories under', 'simple-logo-carousel'); ?>
     <strong><?php _e('Logo Categories', 'simple-logo-carousel'); ?></strong> <?php _e('to display the logos you want to those specific categories. You can also choose no categories to display all logos.', 'simple-logo-carousel'); ?>
 </p>
+<p><?php _e('If you want to change the order of how your logos are displayed, you can drag and rearrange your logos under the ', 'simple-logo-carousel'); ?>
+    <strong><?php _e('Logo Display Order.', 'simple-logo-carousel'); ?></strong>
+</p>
 <h4><?php _e('3. Display Your Carousel', 'simple-logo-carousel'); ?></h4>
 <p><?php _e('To display your carousel, copy the shortcode in the', 'simple-logo-carousel'); ?>
     <strong><?php _e('Shortcode', 'simple-logo-carousel'); ?></strong> <?php _e('box after saving your carousel and paste that onto any post or page.', 'simple-logo-carousel'); ?>
