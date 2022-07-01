@@ -173,6 +173,6 @@ TEMPLATE;
 
 <textarea name="slc_carousel_logo_display_order" id="slc-carousel-logo-display-order">
     <?php if (!empty($slcLogoDisplayOrder)) {
-        echo esc_html($slcLogoDisplayOrder);
+        esc_html_e($slcLogoDisplayOrder);
     } ?>
 </textarea>
