@@ -147,8 +147,26 @@ if ($pagenow != 'post-new.php') {
     if ($saved_post) {
         $post = $saved_post;
     }
+	$allowed_html = array(
+		'div' => array(
+			'class'   => array(),
+			'data-id' => array()
+		),
+		'a'   => array(
+			'href'   => array(),
+			'target' => array()
+		),
+		'p'   => array(
+			'class' => array(),
+		),
+		'img' => array(
+			'src'   => array(),
+			'alt'   => array(),
+			'class' => array(),
+		),
 
-    echo $output;
+	);
+	echo wp_kses( $output, $allowed_html );
 } else {
     echo '<p>' . __('To preview the carousel, please make sure you save your post first.', 'simple-logo-carousel') . '</p>';
 }

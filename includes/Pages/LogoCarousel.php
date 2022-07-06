@@ -347,7 +347,7 @@ class LogoCarousel extends BaseController
                 $categories = substr($categories, 0, -2);
 
                 // display it
-                echo $categories;
+                esc_attr_e($categories);
             } else {
                 // else inform there is not one
                 echo '<em>' . __('No categories were selected, all logos are being shown.', 'simple-logo-carousel') . '</em>';
@@ -355,7 +355,7 @@ class LogoCarousel extends BaseController
         } // if there is a shortcode column
         else if ('shortcode' === $column) {
             // output the shortcode
-            echo '<input type="text" value="[simple-logo-carousel id=' . $post_id . ']" style="min-width:245px;" readonly />';
+	        echo '<input type="text" value="[simple-logo-carousel id=' . esc_html__($post_id) . ']" style="min-width:245px;" readonly />';
         }
     }
 

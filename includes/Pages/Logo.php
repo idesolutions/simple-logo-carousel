@@ -146,9 +146,9 @@ class Logo extends BaseController
         else if ('target' === $column) {
             $target = esc_html(get_post_meta($post_id, 'slc_url_target', true));
             if ($target == '_blank') {
-                _e('New Window or Tab', 'simple-logo-carousel');
+                esc_html_e('New Window or Tab', 'simple-logo-carousel');
             } else {
-                _e('Same Window', 'simple-logo-carousel');
+	            esc_html_e('Same Window', 'simple-logo-carousel');
             }
         } // if there is a alt text column
         else if ('alt_text' === $column) {
@@ -156,7 +156,7 @@ class Logo extends BaseController
             if ($altText == '') {
                 echo '<em>' . __('No alt text was provided.', 'simple-logo-carousel') . '</em>';
             } else {
-                echo $altText;
+                esc_html_e($altText);
             }
         } // if there is a category column
         else if ('category' === $column) {
@@ -174,7 +174,7 @@ class Logo extends BaseController
                 $categories = substr($categories, 0, -2);
 
                 // display it
-                echo $categories;
+	            esc_html_e($categories);
             } else {
                 // else inform there is not one
                 echo '<em>' . __('No category found.', 'simple-logo-carousel') . '</em>';
