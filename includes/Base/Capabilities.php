@@ -3,7 +3,7 @@
 /**
  * Registers our capabilities
  *
- * @package ide-interactive/simple-logo-carousel
+ * @package productive-laziness/simple-logo-carousel
  */
 
 namespace PLSimpleLogoCarousel\Base;

@@ -31,29 +31,24 @@ jQuery(document).ready(function () {
             }
         });
 
-        // sort our logos
-        jQuery('.slc-carousel-id-' + id).find('.slc-logo').sort(function (a, b) {
-            return jQuery(a).attr('data-order') - jQuery(b).attr('data-order');
-        }).appendTo('.slc-carousel-id-' + id).ready(function () {
-            // initialize our slick with our logo carousel
-            jQuery('.slc-carousel-id-' + id).slick({
-                autoplay: params['options'].autoplay,
-                autoplaySpeed: params['options'].autoplaySpeed,
-                arrows: params['options'].arrows,
-                prevArrow: params['options'].prevArrow,
-                nextArrow: params['options'].nextArrow,
-                centerMode: params['options'].centerMode,
-                cssEase: params['options'].cssEase,
-                dots: false,
-                draggable: params['options'].draggable,
-                pauseOnFocus: params['options'].pauseOnFocus,
-                pauseOnHover: params['options'].pauseOnHover,
-                speed: params['options'].speed,
-                swipe: params['options'].swipe,
-                slidesToShow: initialSlidesToShow,
-                slidesToScroll: initialSlidesToScroll,
-                responsive: breakpoints
-            });
+        // initialize our slick with our logo carousel
+        jQuery('.slc-carousel-id-' + id).slick({
+            autoplay: params['options'].autoplay,
+            autoplaySpeed: params['options'].autoplaySpeed,
+            arrows: params['options'].arrows,
+            prevArrow: params['options'].prevArrow,
+            nextArrow: params['options'].nextArrow,
+            centerMode: params['options'].centerMode,
+            cssEase: params['options'].cssEase,
+            dots: false,
+            draggable: params['options'].draggable,
+            pauseOnFocus: params['options'].pauseOnFocus,
+            pauseOnHover: params['options'].pauseOnHover,
+            speed: params['options'].speed,
+            swipe: params['options'].swipe,
+            slidesToShow: initialSlidesToShow,
+            slidesToScroll: initialSlidesToScroll,
+            responsive: breakpoints
         });
     });
 

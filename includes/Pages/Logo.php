@@ -4,7 +4,7 @@
  * Manages and handles everything relating to the logo post type
  * view which also includes rendering and saving the page data
  *
- * @package ide-interactive/simple-logo-carousel
+ * @package productive-laziness/simple-logo-carousel
  */
 
 namespace PLSimpleLogoCarousel\Pages;

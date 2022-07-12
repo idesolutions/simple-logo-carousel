@@ -3,7 +3,7 @@
 /**
  * Registers our custom post types
  *
- * @package ide-interactive/simple-logo-carousel
+ * @package productive-laziness/simple-logo-carousel
  */
 
 namespace PLSimpleLogoCarousel\Base;
@@ -94,7 +94,7 @@ class CustomPostType
         $args = array(
             'label' => __('Logo', 'simple-logo-carousel'),
             'labels' => $labels,
-            'supports' => array('title', 'thumbnail'),
+            'supports' => array('title', 'thumbnail', 'page-attributes'),
             'taxonomies' => array('slc_logo_category'),
             'hierarchical' => false,
             'public' => true,

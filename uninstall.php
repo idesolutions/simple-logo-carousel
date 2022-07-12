@@ -2,7 +2,7 @@
 /**
  * Trigger this file on plugin uninstall
  *
- * @package ide-interactive/simple-logo-carousel
+ * @package productive-laziness/simple-logo-carousel
  */
 
 // if uninstall.php is not called by WordPress, die

@@ -3,7 +3,7 @@
 /**
  * Manages and handles the settings page
  *
- * @package ide-interactive/simple-logo-carousel
+ * @package productive-laziness/simple-logo-carousel
  */
 
 namespace PLSimpleLogoCarousel\Pages;

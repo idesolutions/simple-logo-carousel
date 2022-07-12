@@ -3,10 +3,12 @@
 /**
  * Registers our shortcodes
  *
- * @package ide-interactive/simple-logo-carousel
+ * @package productive-laziness/simple-logo-carousel
  */
 
 namespace PLSimpleLogoCarousel\Base;
+
+use PLSimpleLogoCarousel\Base\BaseController;
 
 class Shortcode extends BaseController
 {
@@ -80,6 +82,7 @@ class Shortcode extends BaseController
                         'post_type' => 'slc_logo',
                         'posts_per_page' => -1,
                         'post_status' => 'publish',
+                        'orderby' => 'menu_order',
                         'tax_query' => array(
                             'relation' => 'OR',
                             $taxonomyQuery
@@ -93,6 +96,7 @@ class Shortcode extends BaseController
                         'post_type' => 'slc_logo',
                         'posts_per_page' => -1,
                         'post_status' => 'publish',
+                        'orderby' => 'menu_order'
                     )
                 );
             }
@@ -105,28 +109,12 @@ class Shortcode extends BaseController
 
                 $output .= '<div class="slc-logos slc-carousel-id-' . $id . '" data-id="' . $id . '">';
 
-                // get our logo display order
-                $slcLogoDisplayOrder = get_post_meta($id, 'slc_carousel_logo_display_order', true);
-                if (!empty($slcLogoDisplayOrder)) {
-                    $slcLogoDisplayOrder = json_decode($slcLogoDisplayOrder);
-                }
-
                 // while there are posts
                 while ($query->have_posts()) {
                     $query->the_post();
 
-                    $order = 9999;
-                    if (!empty($slcLogoDisplayOrder)) {
-                        foreach ($slcLogoDisplayOrder as $logoOrder) {
-                            if ($logoOrder->id == get_the_id()) {
-                                $order = $logoOrder->order;
-                                break;
-                            }
-                        }
-                    }
-
                     // create a container for an individual logo
-                    $output .= '<div class="slc-logo" data-order="' . $order . '">';
+                    $output .= '<div class="slc-logo">';
 
                     // if there is a link
                     if (!empty(esc_url(get_post_meta(get_the_id(), 'slc_external_url', true)))) {
@@ -229,7 +217,7 @@ class Shortcode extends BaseController
         if (get_post_meta($id, 'slc_carousel_custom_arrows', true) == 'false') {
             $cssOutput .= " .slc-carousel-id-{$id} .slick-prev { font-size: {$arrowSize}; line-height: {$arrowSize}; color: {$arrowColor}; margin-top: calc(-{$arrowSize}/2); left:{$arrowOffset} } .slc-carousel-id-{$id} .slick-next { font-size: {$arrowSize}; line-height: {$arrowSize}; color: {$arrowColor}; margin-top: calc(-{$arrowSize}/2); right:{$arrowOffset} }";
         } else {
-            $cssOutput .= " .slc-carousel-id-{$id} .slick-prev.slick-custom-arrow, .slc-carousel-id-{$id} .slick-next.slick-custom-arrow { max-width: {$arrowImageMaxWidth} } .slc-carousel-id-{$id} .slick-prev { left:{$arrowOffset} } .slc-carousel-id-{$id} .slick-next { right:{$arrowOffset} }";
+            $cssOutput .= " .slc-carousel-id-{$id} .slick-prev.slick-custom-arrow, .slc-carousel-id-{$id} .slick-next.slick-custom-arrow { max-width: {$arrowImageMaxWidth} }";
         }
 
         // return our css output
@@ -240,7 +228,7 @@ class Shortcode extends BaseController
      * get our carousel options
      *
      * @param $id
-     * @return array
+     * @return mixed
      */
     function get_carousel_options($id)
     {
