@@ -32,6 +32,7 @@ $slcPauseOnFocus = esc_attr(get_post_meta($post->ID, 'slc_carousel_pause_on_focu
 $slcSpeed = esc_attr(get_post_meta($post->ID, 'slc_carousel_speed', true));
 $slcSwipe = esc_attr(get_post_meta($post->ID, 'slc_carousel_swipe', true));
 $slcSlideVerticalAlignment = esc_attr(get_post_meta($post->ID, 'slc_carousel_slide_vertical_alignment', true));
+$slcDisableLazyLoadClass = esc_attr(get_post_meta($post->ID, 'slc_carousel_disable_lazy_load_class', true));
 ?>
 
 <table class="form-table">
@@ -114,7 +115,7 @@ $slcSlideVerticalAlignment = esc_attr(get_post_meta($post->ID, 'slc_carousel_sli
             <input type="text" class="color-field" name="slc_carousel_hover_text_background_color"
                    id="slc-carousel-hover-text-background-color"
                    value="<?php if (empty($slcHoverTextBackgroundColor)) {
-                      esc_attr_e($options['slc_carousel_hover_text_background_color']);
+                       esc_attr_e($options['slc_carousel_hover_text_background_color']);
                    } else {
                        esc_attr_e($slcHoverTextBackgroundColor);
                    } ?>"/>
@@ -284,9 +285,9 @@ $slcSlideVerticalAlignment = esc_attr(get_post_meta($post->ID, 'slc_carousel_sli
         <td>
             <input type="text" name="slc_carousel_arrow_size" id="slc-carousel-arrow-size"
                    value="<?php if (empty($slcArrowSize)) {
-                      esc_attr_e($options['slc_carousel_arrow_size']);
+                       esc_attr_e($options['slc_carousel_arrow_size']);
                    } else {
-	                   esc_attr_e($slcArrowSize);
+                       esc_attr_e($slcArrowSize);
                    } ?>"/>
             <p class="description"><?php esc_html_e('The size of the arrows. All CSS units are available. Default is', 'simple-logo-carousel'); ?>
                 <strong>50px</strong>.</p>
@@ -302,7 +303,7 @@ $slcSlideVerticalAlignment = esc_attr(get_post_meta($post->ID, 'slc_carousel_sli
                    value="<?php if (empty($slcArrowOffset)) {
                        esc_attr_e($options['slc_carousel_arrow_offset']);
                    } else {
-	                   esc_attr_e($slcArrowOffset);
+                       esc_attr_e($slcArrowOffset);
                    } ?>"/>
             <p class="description"><?php esc_html_e('How far out the arrows are on the left and right sides. All CSS units are available. Default is', 'simple-logo-carousel'); ?>
                 <strong>-25px</strong>.</p>
@@ -676,6 +677,21 @@ $slcSlideVerticalAlignment = esc_attr(get_post_meta($post->ID, 'slc_carousel_sli
             </select>
             <p class="description"><?php esc_html_e('Enable swiping. Default is', 'simple-logo-carousel'); ?>
                 <strong><?php esc_html_e('true', 'simple-logo-carousel'); ?></strong>.</p>
+        </td>
+    </tr>
+    <!-- DISABLE LAZY LOAD CLASS -->
+    <tr>
+        <th>
+            <label for="slc-carousel-disable-lazy-load-class"><?php esc_html_e('Disable Lazy Load Class', 'simple-logo-carousel'); ?></label>
+        </th>
+        <td>
+            <input type="text" name="slc_carousel_disable_lazy_load_class" id="slc-carousel-disable-lazy-load-class"
+                   value="<?php if (empty($slcDisableLazyLoadClass)) {
+                       esc_attr_e($options['slc_carousel_disable_lazy_load_class']);
+                   } else {
+                       esc_attr_e($slcDisableLazyLoadClass);
+                   } ?>"/>
+            <p class="description"><?php esc_html_e('Add class to disable lazy loading. Multiple classes should be separated by a space.', 'simple-logo-carousel'); ?></p>
         </td>
     </tr>
 </table>

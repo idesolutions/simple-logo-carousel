@@ -8,9 +8,7 @@
 
 namespace PLSimpleLogoCarousel\Base;
 
-use PLSimpleLogoCarousel\Base\BaseController;
-
-class Shortcode extends BaseController
+class Shortcode
 {
     /**
      * register our post types
@@ -156,7 +154,11 @@ class Shortcode extends BaseController
 
                     $output .= '">';
 
-                    $output .= '<img src="' . get_the_post_thumbnail_url(get_the_id(), 'full') . '" alt="' . $altText . '" class="slc-logo-img"/>';
+                    if (empty(esc_attr(get_post_meta($id, 'slc_carousel_disable_lazy_load_class', true)))) {
+                        $output .= '<img src="' . get_the_post_thumbnail_url(get_the_id(), 'full') . '" alt="' . $altText . '" class="slc-logo-img"/>';
+                    } else {
+                        $output .= '<img src="' . get_the_post_thumbnail_url(get_the_id(), 'full') . '" alt="' . $altText . '" class="slc-logo-img ' . esc_attr(get_post_meta($id, 'slc_carousel_disable_lazy_load_class', true)) . '"/>';
+                    }
 
                     // if there is a hover text
                     if (!empty(esc_html(get_post_meta(get_the_id(), 'slc_hover_text', true)))) {
@@ -242,8 +244,13 @@ class Shortcode extends BaseController
 
         // if we are using custom arrows
         if (get_post_meta($id, 'slc_carousel_custom_arrows', true) != 'false') {
-            $prevArrow = '<img src="' . get_post_meta($id, 'slc_carousel_left_arrow_image', true) . '" class="slick-prev slick-custom-arrow" alt="' . __('Arrow to go to previous logo on carousel.', 'simple-logo-carousel') . '"/>';
-            $nextArrow = '<img src="' . get_post_meta($id, 'slc_carousel_right_arrow_image', true) . '" class="slick-next slick-custom-arrow" alt="' . __('Arrow to go to next logo on carousel.', 'simple-logo-carousel') . '"/>';
+            if (empty(esc_attr(get_post_meta(get_the_id(), 'slc_carousel_disable_lazy_load_class', true)))) {
+                $prevArrow = '<img src="' . get_post_meta($id, 'slc_carousel_left_arrow_image', true) . '" class="slick-prev slick-custom-arrow" alt="' . __('Arrow to go to previous logo on carousel.', 'simple-logo-carousel') . '"/>';
+                $nextArrow = '<img src="' . get_post_meta($id, 'slc_carousel_right_arrow_image', true) . '" class="slick-next slick-custom-arrow" alt="' . __('Arrow to go to next logo on carousel.', 'simple-logo-carousel') . '"/>';
+            } else {
+                $prevArrow = '<img src="' . get_post_meta($id, 'slc_carousel_left_arrow_image', true) . '" class="slick-prev slick-custom-arrow ' . esc_attr(get_post_meta(get_the_id(), 'slc_carousel_disable_lazy_load_class', true)) . '" alt="' . __('Arrow to go to previous logo on carousel.', 'simple-logo-carousel') . '"/>';
+                $nextArrow = '<img src="' . get_post_meta($id, 'slc_carousel_right_arrow_image', true) . '" class="slick-next slick-custom-arrow ' . esc_attr(get_post_meta(get_the_id(), 'slc_carousel_disable_lazy_load_class', true)) . '" alt="' . __('Arrow to go to next logo on carousel.', 'simple-logo-carousel') . '"/>';
+            }
         }
 
         $centerMode = get_post_meta($id, 'slc_carousel_center_mode', true);

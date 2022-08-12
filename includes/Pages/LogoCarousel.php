@@ -249,6 +249,7 @@ class LogoCarousel extends BaseController
         }
 
         update_post_meta($post->ID, 'slc_carousel_swipe', sanitize_text_field($_POST['slc_carousel_swipe']));
+        update_post_meta($post->ID, 'slc_carousel_disable_lazy_load_class', sanitize_text_field($_POST['slc_carousel_disable_lazy_load_class']));
 
         return $post;
     }

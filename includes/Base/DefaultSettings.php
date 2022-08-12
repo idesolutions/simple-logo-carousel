@@ -8,9 +8,7 @@
 
 namespace PLSimpleLogoCarousel\Base;
 
-use PLSimpleLogoCarousel\Base\BaseController;
-
-class DefaultSettings extends BaseController
+class DefaultSettings
 {
     /**
      * register our default settings
@@ -55,6 +53,7 @@ class DefaultSettings extends BaseController
         $new_options['slc_carousel_speed'] = 1000;
         $new_options['slc_carousel_swipe'] = 'true';
         $new_options['slc_carousel_slide_vertical_alignment'] = 'center';
+        $new_options['slc_carousel_disable_lazy_load_class'] = '';
 
         // check if we already have assigned values and if not set them
         $merged_options = wp_parse_args($options, $new_options);

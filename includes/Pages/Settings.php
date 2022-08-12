@@ -92,6 +92,7 @@ class Settings extends BaseController
         $new_options['slc_carousel_speed'] = 1000;
         $new_options['slc_carousel_swipe'] = 'true';
         $new_options['slc_carousel_slide_vertical_alignment'] = 'center';
+        $new_options['slc_carousel_disable_lazy_load_class'] = '';
 
         // check if we already have assigned values and if not set them
         $merged_options = wp_parse_args($options, $new_options);
@@ -144,6 +145,7 @@ class Settings extends BaseController
         $options['slc_carousel_speed'] = isset($_POST['slc_carousel_speed']) ? intval($_POST['slc_carousel_speed']) : 1000;
         $options['slc_carousel_swipe'] = isset($_POST['slc_carousel_swipe']) ? sanitize_text_field($_POST['slc_carousel_swipe']) : 'true';
         $options['slc_carousel_slide_vertical_alignment'] = isset($_POST['slc_carousel_slide_vertical_alignment']) ? sanitize_text_field($_POST['slc_carousel_slide_vertical_alignment']) : 'center';
+        $options['slc_carousel_disable_lazy_load_class'] = isset($_POST['slc_carousel_disable_lazy_load_class']) ? sanitize_text_field($_POST['slc_carousel_disable_lazy_load_class']) : '';
 
         // store updated options array to database
         update_option('slc_initial_carousel_options', $options);
