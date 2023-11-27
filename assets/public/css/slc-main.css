@@ -46,6 +46,8 @@ https://www.solodev.com/blog/web-design/adding-an-infinite-client-logo-carousel-
     z-index: 1;
     background: transparent;
     display: none;
+    margin: 0;
+    padding: 0;
 }
 
 .slc-logos .slick-slide {
@@ -135,6 +137,7 @@ https://www.solodev.com/blog/web-design/adding-an-infinite-client-logo-carousel-
 
 .slc-logos .slick-slide img {
     display: block;
+    margin: 0 auto;
 }
 
 .slc-logos .slick-slide.slick-loading img {
@@ -172,6 +175,7 @@ https://www.solodev.com/blog/web-design/adding-an-infinite-client-logo-carousel-
     z-index: 5;
     text-decoration: none;
     outline: none;
+    border: 0;
 }
 
 .slc-logos button.slick-prev.slick-arrow:hover,
@@ -198,16 +202,18 @@ https://www.solodev.com/blog/web-design/adding-an-infinite-client-logo-carousel-
 }
 
 .slc-logos img.slick-prev.slick-custom-arrow.slick-arrow {
-    left: 0;
     transform: translateY(-50%);
 }
 
 .slc-logos img.slick-next.slick-custom-arrow.slick-arrow {
-    right: 0;
     transform: translateY(-50%);
 }
 
 .slc-logo img,
 .slc-logo a {
     outline: none;
+}
+
+.slc-logo-img {
+    max-width: 100%;
 }

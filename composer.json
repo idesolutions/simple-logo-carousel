@@ -1,12 +1,12 @@
 {
-    "name": "productive-laziness/simple-logo-carousel",
+    "name": "ide-interactive/simple-logo-carousel",
     "description": "A simplistic carousel to elegantly display logos. Powered by slick.",
     "type": "project",
     "license": "GPLv2 or later",
     "authors": [
         {
-            "name": "Productive Laziness LLC",
-            "email": "support@productivelaziness.com"
+            "name": "IDE Interactive",
+            "email": "hello@ideinteractive.com"
         }
     ],
     "minimum-stability": "dev",

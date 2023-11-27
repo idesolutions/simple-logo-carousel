@@ -34,3 +34,7 @@
 .slc-nested-list {
     padding-left: 15px;
 }
+
+.slc-logo-container {
+    display: inline-block;
+}

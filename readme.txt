@@ -1,10 +1,10 @@
 === Simple Logo Carousel ===
-Contributors: tvledesign
+Contributors: tvledesign, ideinteractive
 Tags: logo carousel, logo slider, carousel, slider
 Requires at least: 5.0
-Tested up to: 5.7.2
-Requires PHP: 5.6
-Stable tag: 1.6
+Tested up to: 6.0.2
+Requires PHP: 7.4
+Stable tag: 1.9.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,9 +20,6 @@ Simple Logo Carousel is a free WordPress plugin powered by [slick](http://kenwhe
 * Link logos to an internal or external link.
 * Categorize logos for different carousels.
 * Display carousels anywhere on your site via a shortcode.
-
-= Upgrade Notice To 1.5 =
-If you are upgrading from any prior versions to 1.5, please bear in mind your carousel options will be cleared. You will have to reconfigure your carousel options again to have them displayed properly.
 
 == Installation ==
 1. Upload the entire simple-logo-carousel folder to the /wp-content/plugins/ directory.
@@ -42,11 +39,34 @@ No. Simple Logo Carousel is a free plugin and at this time, will not have a prem
 1. View of all the logos under the Logos post type.
 2. View of the Logo Options when creating a new Logo.
 3. View of the carousel under the Logo Carousels post type.
-4. View of the carousel's shortcode and logo display options.
-5. General view of the carousel options.
+4. View of the carousel's shortcode and logo display order.
+5. General view of the carousel options and logo display options.
 6. View of the logo carousel on the website.
 
 == Changelog ==
+
+= 1.9.1 =
+
+* Added in swipeToSlide and touchThreshold on Slick.js initialize to add support for better touch and drag.
+
+= 1.9 =
+
+* Added "Disable Lazy Load Class" option to Settings and Carousel Settings. You can now add class (or classes) to disable images on the carousel from lazy loading depending on the lazy load plugin you're using.
+
+= 1.8 =
+
+* Updated escaping and sanitization locations.
+* Set default CSS to margin 0 and padding 0 for hover text.
+* Fixed breakpoint bug where breakpoints were not saving in the admin.
+
+= 1.7 =
+
+* Added preview area in Logo Carousels.
+* Added logo display order option in Logo Carousels.
+* Remove page attributes from Logos since they are no longer used.
+* Updated it so arrow offset also applies to custom arrow images.
+* Center logos by default on carousel with margin auto.
+
 = 1.6 =
 
 * Updated main stylesheet so styles only apply to plugin's carousels in case slick is being used elsewhere.

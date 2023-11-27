@@ -2,7 +2,7 @@
 /**
  * Manages our plugin deactivation
  *
- * @package productive-laziness/simple-logo-carousel
+ * @package ide-interactive/simple-logo-carousel
  */
 
 namespace PLSimpleLogoCarousel\Base;

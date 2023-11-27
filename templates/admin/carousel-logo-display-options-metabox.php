@@ -14,9 +14,9 @@ $slcLogoDisplayOptions = get_post_meta($post->ID, 'slc_carousel_logo_display_opt
     <thead>
     <tr>
         <th></th>
-        <th><?php esc_html_e('Breakpoint', 'simple-logo-carousel', 'simple-logo-carousel'); ?> <span
+        <th><?php _e('Breakpoint', 'simple-logo-carousel'); ?> <span
                     class="slc-required">*</span></th>
-        <th><?php esc_html_e('Options', 'simple-logo-carousel', 'simple-logo-carousel'); ?> <span class="slc-required">*</span>
+        <th><?php _e('Options', 'simple-logo-carousel'); ?> <span class="slc-required">*</span>
         </th>
         <th></th>
     </tr>
@@ -28,27 +28,27 @@ $slcLogoDisplayOptions = get_post_meta($post->ID, 'slc_carousel_logo_display_opt
             <td>
                 <input type="number" class="breakpoint" value=""/>
                 <span class="size">px</span>
-                <span class="default"><?php esc_html_e('Default', 'simple-logo-carousel'); ?></span>
+                <span class="default"><?php _e('Default', 'simple-logo-carousel'); ?></span>
             </td>
             <td>
                 <table class="form-table">
                     <tr>
                         <th>
-                            <label><?php esc_html_e('Slides To Show', 'simple-logo-carousel'); ?></label>
+                            <label><?php _e('Slides To Show', 'simple-logo-carousel'); ?></label>
                         </th>
                         <td>
                             <input type="number" class="slides-to-show" value="1" min="1" step="1" required/>
-                            <p class="description"><?php esc_html_e('Numbers of logos to show. Default is', 'simple-logo-carousel'); ?>
+                            <p class="description"><?php _e('Numbers of logos to show. Default is', 'simple-logo-carousel'); ?>
                                 <strong>1</strong>.</p>
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            <label><?php esc_html_e('Slides to Scroll', 'simple-logo-carousel'); ?></label>
+                            <label><?php _e('Slides to Scroll', 'simple-logo-carousel'); ?></label>
                         </th>
                         <td>
                             <input type="number" class="slides-to-scroll" value="1" min="1" step="1" required/>
-                            <p class="description"><?php esc_html_e('Numbers of logos to scroll at a time. Default is', 'simple-logo-carousel'); ?>
+                            <p class="description"><?php _e('Numbers of logos to scroll at a time. Default is', 'simple-logo-carousel'); ?>
                                 <strong>1</strong>.</p>
                         </td>
                     </tr>
@@ -68,16 +68,16 @@ $slcLogoDisplayOptions = get_post_meta($post->ID, 'slc_carousel_logo_display_opt
                 <td>
                     <?php if ($breakpoint->breakpoint != 'default') { ?>
                         <img class="slc-sort-btn"
-                             src="<?php echo esc_url($this->plugin_url . 'assets/admin/images/sort-solid.svg');  ?>"/>
+                             src="<?php echo esc_url($this->plugin_url . 'assets/admin/images/sort-solid.svg'); ?>"/>
                     <?php } ?>
                 </td>
                 <td>
                     <?php if ($breakpoint->breakpoint == 'default') { ?>
                         <input type="number" class="breakpoint" value=""/>
                         <span class="size">px</span>
-                        <span class="default"><?php esc_html_e('Default', 'simple-logo-carousel', 'simple-logo-carousel'); ?></span>
+                        <span class="default"><?php _e('Default', 'simple-logo-carousel'); ?></span>
                     <?php } else { ?>
-                        <input type="number" class="breakpoint" value="<?php esc_attr_e($breakpoint->scroll); ?>"
+                        <input type="number" class="breakpoint" value="<?php esc_attr_e($breakpoint->breakpoint); ?>"
                                min="1" step="1" required/>
                         <span class="size">px</span>
                     <?php } ?>
@@ -86,23 +86,25 @@ $slcLogoDisplayOptions = get_post_meta($post->ID, 'slc_carousel_logo_display_opt
                     <table class="form-table">
                         <tr>
                             <th>
-                                <label><?php esc_html_e('Slides To Show', 'simple-logo-carousel'); ?></label>
+                                <label><?php _e('Slides To Show', 'simple-logo-carousel'); ?></label>
                             </th>
                             <td>
-                                <input type="number" class="slides-to-show" value="<?php esc_attr_e($breakpoint->scroll); ?>"
+                                <input type="number" class="slides-to-show"
+                                       value="<?php esc_attr_e($breakpoint->show); ?>"
                                        min="1" step="1" required/>
-                                <p class="description"><?php esc_html_e('Numbers of logos to show. Default is', 'simple-logo-carousel'); ?>
+                                <p class="description"><?php _e('Numbers of logos to show. Default is', 'simple-logo-carousel'); ?>
                                     <strong>1</strong>.</p>
                             </td>
                         </tr>
                         <tr>
                             <th>
-                                <label><?php esc_html_e('Slides to Scroll', 'simple-logo-carousel'); ?></label>
+                                <label><?php _e('Slides to Scroll', 'simple-logo-carousel'); ?></label>
                             </th>
                             <td>
-                                <input type="number" class="slides-to-scroll" value="<?php esc_attr_e($breakpoint->scroll); ?>"
+                                <input type="number" class="slides-to-scroll"
+                                       value="<?php esc_attr_e($breakpoint->scroll); ?>"
                                        min="1" step="1" required/>
-                                <p class="description"><?php esc_html_e('Numbers of logos to scroll at a time. Default is', 'simple-logo-carousel'); ?>
+                                <p class="description"><?php _e('Numbers of logos to scroll at a time. Default is', 'simple-logo-carousel'); ?>
                                     <strong>1</strong>.</p>
                             </td>
                         </tr>
@@ -123,11 +125,12 @@ $slcLogoDisplayOptions = get_post_meta($post->ID, 'slc_carousel_logo_display_opt
     <?php if (empty($slcLogoDisplayOptions)) { ?>
         [{"breakpoint": "default", "show": 1, "scroll": 1}]
     <?php } else {
-        esc_html_e($slcLogoDisplayOptions);
+        echo esc_textarea($slcLogoDisplayOptions);
     } ?>
 </textarea>
 
 <div id="slc-logo-display-options-footer">
-    <a href="#" id="sort-breakpoint-btn" class="button button-large">Sort</a>
-    <a href="#" id="add-breakpoint-btn" class="button button-primary button-large">Add Breakpoint</a>
+    <a href="#" id="sort-breakpoint-btn" class="button button-large"><?php _e('Sort', 'simple-logo-carousel'); ?></a>
+    <a href="#" id="add-breakpoint-btn"
+       class="button button-primary button-large"><?php _e('Add Breakpoint', 'simple-logo-carousel'); ?></a>
 </div>

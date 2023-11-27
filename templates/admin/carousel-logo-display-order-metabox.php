@@ -67,7 +67,7 @@ if ($pagenow != 'post-new.php') {
 
     // if the query have posts
     if ($query->have_posts()) {
-        $logoLabel = __('Logo', 'simple-logo-carousel', 'simple-logo-carousel');
+        $logoLabel = __('Logo', 'simple-logo-carousel');
 
         $output .= <<<TEMPLATE
         <table id="slc-logo-display-order-table">
@@ -167,12 +167,12 @@ TEMPLATE;
 
     echo $output;
 } else {
-    echo '<p>' . __('To rearrange the logos, please make sure you save your post first.', 'simple-logo-carousel') . '</p>';
+    echo '<p>' . __('To rearrange the logos, please make sure you save your post first', 'simple-logo-carousel') . '.</p>';
 }
 ?>
 
 <textarea name="slc_carousel_logo_display_order" id="slc-carousel-logo-display-order">
     <?php if (!empty($slcLogoDisplayOrder)) {
-        esc_html_e($slcLogoDisplayOrder);
+        echo esc_textarea($slcLogoDisplayOrder);
     } ?>
 </textarea>

@@ -4,7 +4,7 @@
  * Manages and handles everything relating to the logo post type
  * view which also includes rendering and saving the page data
  *
- * @package productive-laziness/simple-logo-carousel
+ * @package ide-interactive/simple-logo-carousel
  */
 
 namespace PLSimpleLogoCarousel\Pages;
@@ -91,12 +91,12 @@ class Logo extends BaseController
         }
 
         // verify taxonomies meta box nonce
-        if (!isset($_POST['slc_cpt']) || !wp_verify_nonce($_POST['slc_cpt'], 'verify_slc')) {
+        if (!isset($_POST['slc_cpt']) || !wp_verify_nonce(sanitize_key($_POST['slc_cpt']), 'verify_slc')) {
             return;
         }
 
         // update and save our meta data
-        update_post_meta($post->ID, 'slc_external_url', esc_url_raw($_POST['slc_external_url']));
+        update_post_meta($post->ID, 'slc_external_url', sanitize_url($_POST['slc_external_url']));
         update_post_meta($post->ID, 'slc_url_target', sanitize_text_field($_POST['slc_url_target']));
         update_post_meta($post->ID, 'slc_alt_text', sanitize_text_field($_POST['slc_alt_text']));
         update_post_meta($post->ID, 'slc_hover_text', sanitize_text_field($_POST['slc_hover_text']));
@@ -141,20 +141,20 @@ class Logo extends BaseController
             echo get_the_post_thumbnail($post_id, array(80, 80));
         } // if there is a link url column
         else if ('link_url' === $column) {
-            echo esc_url(get_post_meta($post_id, 'slc_external_url', true));
+            echo '<a href="' . esc_url(get_post_meta($post_id, 'slc_external_url', true)) . '" target="_blank">' . esc_url(get_post_meta($post_id, 'slc_external_url', true)) . '</a>';
         } // if there is a target column
         else if ('target' === $column) {
             $target = esc_html(get_post_meta($post_id, 'slc_url_target', true));
             if ($target == '_blank') {
-                esc_html_e('New Window or Tab', 'simple-logo-carousel');
+                _e('New Window or Tab', 'simple-logo-carousel');
             } else {
-	            esc_html_e('Same Window', 'simple-logo-carousel');
+                _e('Same Window', 'simple-logo-carousel');
             }
         } // if there is a alt text column
         else if ('alt_text' === $column) {
             $altText = esc_html(get_post_meta($post_id, 'slc_alt_text', true));
             if ($altText == '') {
-                echo '<em>' . __('No alt text was provided.', 'simple-logo-carousel') . '</em>';
+                echo '<em>' . esc_html('No alt text was provided.', 'simple-logo-carousel') . '</em>';
             } else {
                 esc_html_e($altText);
             }
@@ -174,10 +174,10 @@ class Logo extends BaseController
                 $categories = substr($categories, 0, -2);
 
                 // display it
-	            esc_html_e($categories);
+                esc_html_e($categories);
             } else {
                 // else inform there is not one
-                echo '<em>' . __('No category found.', 'simple-logo-carousel') . '</em>';
+                echo '<em>' . esc_html__('No category found.', 'simple-logo-carousel') . '</em>';
             }
         }
     }

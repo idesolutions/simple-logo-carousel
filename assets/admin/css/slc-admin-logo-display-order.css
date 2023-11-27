@@ -1,0 +1,71 @@
+#slc-logo-display-order-table {
+    width: 100%;
+    border: #ccd0d4 solid 1px;
+    margin: 15px 0;
+    border-collapse: collapse;
+}
+
+#slc-logo-display-order-footer {
+    text-align: right;
+}
+
+#slc-logo-display-order-table .slc-sort-btn {
+    width: 10px;
+    cursor: pointer;
+}
+
+#slc-logo-display-order-table thead th {
+    text-align: left;
+    padding: 8px;
+    border-color: #d5d9dd;
+    border-width: 0 0 1px 1px;
+    border-style: solid;
+}
+
+#slc-logo-display-order-table > tbody > tr > td {
+    padding: 8px 8px 18px;
+    border-color: #d5d9dd;
+    border-width: 0 0 1px 1px;
+    border-style: solid;
+}
+
+#slc-logo-display-order-table > thead > tr,
+#slc-logo-display-order-table > tbody > tr {
+    background-color: #fff;
+}
+
+#slc-logo-display-order-table > thead > tr > th:first-child,
+#slc-logo-display-order-table > tbody > tr > td:first-child {
+    width: 28px;
+    text-align: center;
+}
+
+#slc-logo-display-order-table > tbody > tr > td:first-child {
+    background-color: #F9F9F9;
+    cursor: pointer;
+}
+
+#slc-logo-display-order-table > tbody > tr:first-child > td:first-child {
+    cursor: default;
+}
+
+#slc-logo-display-order-table .ui-sortable-helper {
+    display: table;
+    border: #ccd0d4 solid 1px;
+}
+
+#slc-logo-display-order-table img {
+    max-width: 50px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#slc-logo-display-order-table p {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 15px;
+}
+
+#slc-carousel-logo-display-order {
+    display: none;
+}

@@ -76,7 +76,7 @@ if ($pagenow != 'post-new.php') {
             // if there is a link
             if (!empty(esc_url(get_post_meta(get_the_id(), 'slc_external_url', true)))) {
                 // output the link
-                $output .= '<a href="' . esc_url(get_post_meta(get_the_id(), 'slc_external_url', true)) . '" target="' . esc_html(get_post_meta(get_the_id(), 'slc_url_target', true)) . '">';
+                $output .= '<a href="' . esc_url(get_post_meta(get_the_id(), 'slc_external_url', true)) . '" target="_blank">';
             }
 
             // if there is an alt text
@@ -147,26 +147,26 @@ if ($pagenow != 'post-new.php') {
     if ($saved_post) {
         $post = $saved_post;
     }
-	$allowed_html = array(
-		'div' => array(
-			'class'   => array(),
-			'data-id' => array()
-		),
-		'a'   => array(
-			'href'   => array(),
-			'target' => array()
-		),
-		'p'   => array(
-			'class' => array(),
-		),
-		'img' => array(
-			'src'   => array(),
-			'alt'   => array(),
-			'class' => array(),
-		),
+    $allowed_html = array(
+        'div' => array(
+            'class' => array(),
+            'data-id' => array()
+        ),
+        'a' => array(
+            'href' => array(),
+            'target' => array()
+        ),
+        'p' => array(
+            'class' => array(),
+        ),
+        'img' => array(
+            'src' => array(),
+            'alt' => array(),
+            'class' => array(),
+        ),
 
-	);
-	echo wp_kses( $output, $allowed_html );
+    );
+    echo wp_kses($output, $allowed_html);
 } else {
     echo '<p>' . __('To preview the carousel, please make sure you save your post first.', 'simple-logo-carousel') . '</p>';
 }
