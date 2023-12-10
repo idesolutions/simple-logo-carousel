@@ -66,12 +66,30 @@ if ($pagenow != 'post-new.php') {
 
         $output .= '<div class="slc-logos slc-carousel-id-' . get_the_ID() . '" data-id="' . get_the_ID() . '">';
 
+         // get our logo display order
+         $slcLogoDisplayOrder = get_post_meta(get_the_ID(), 'slc_carousel_logo_display_order', true);
+         if (!empty($slcLogoDisplayOrder)) {
+             $slcLogoDisplayOrder = json_decode($slcLogoDisplayOrder);
+         }
+
+
         // while there are posts
         while ($query->have_posts()) {
             $query->the_post();
 
+
+            $order = 9999;
+            if (!empty($slcLogoDisplayOrder)) {
+                foreach ($slcLogoDisplayOrder as $logoOrder) {
+                    if ($logoOrder->id == get_the_id()) {
+                        $order = $logoOrder->order;
+                        break;
+                    }
+                }
+            }
+
             // create a container for an individual logo
-            $output .= '<div class="slc-logo">';
+            $output .= '<div class="slc-logo" data-id="'.get_the_ID().'" data-order="' . $order . '">';
 
             // if there is a link
             if (!empty(esc_url(get_post_meta(get_the_id(), 'slc_external_url', true)))) {
@@ -150,7 +168,8 @@ if ($pagenow != 'post-new.php') {
     $allowed_html = array(
         'div' => array(
             'class' => array(),
-            'data-id' => array()
+            'data-id' => array(),     
+            'data-order'=>array()
         ),
         'a' => array(
             'href' => array(),
