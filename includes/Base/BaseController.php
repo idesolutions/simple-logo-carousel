@@ -16,11 +16,11 @@ namespace PLSimpleLogoCarousel\Base;
  */
 class BaseController
 {
-    //Fixed Creation of dynamic properties to named properties
     public $plugin_path;
     public $plugin_url;
     public $plugin;
     public $admin_url;
+    
     /**
      * create our constructor
      */

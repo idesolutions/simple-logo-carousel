@@ -23,50 +23,35 @@ jQuery(document).ready(function () {
         //updating preview logo container
         let $slider = jQuery(".slc-logos");
 
-        console.log(data);
+        // sort the data array based on the 'order' property
+        let previewData = data.slice();   //creating deep copy
+        previewData.sort(function (a, b) {
+            return a.order - b.order;
+        });
 
-          // Sort the data array based on the 'order' property
-          let previewData = data.slice();   //creating deep copy
-          previewData.sort(function (a, b) {
-                return a.order - b.order;
-            });
+        // create an empty container to hold the sorted slides
+        var $sortedSlides = [];
 
-            // Create an empty container to hold the sorted slides
-            var $sortedSlides = [];
+        // loop through the sorted data and append the corresponding slide elements
+        previewData.forEach(function (item) {
 
+            var slideId = item.id;
 
-            console.log($slider);
-            // Loop through the sorted data and append the corresponding slide elements
-            previewData.forEach(function (item) {
-                
-    var slideId = item.id;
+            // find the slide element with the matching 'data-id' attribute
+            var $slide = $slider.find('.slc-logo[data-id="' + slideId + '"]:not(.slick-cloned)');
 
-    // Find the slide element with the matching 'data-id' attribute
-    var $slide = $slider.find('.slc-logo[data-id="' + slideId + '"]:not(.slick-cloned)');
+            // append the slide to the sorted container
+            $sortedSlides.push($slide[0]);
+        });
 
-    // Append the slide to the sorted container
-    $sortedSlides.push($slide[0]);
-  });
-
-  console.log($sortedSlides);
-
-    //removing all slides
-    //https://github.com/kenwheeler/slick/issues/673#issuecomment-158764194
-    $slider.slick('slickRemove',null, null, true);
-  
+        // removing all slides
+        // https://github.com/kenwheeler/slick/issues/673#issuecomment-158764194
+        $slider.slick('slickRemove', null, null, true);
 
 
-  
-
-
-  $sortedSlides.forEach(function(slide){    
-    $slider.slick('slickAdd',slide);
-  });
-
-   // Replace the original slide container with the sorted container
-   //$slider.empty().append($sortedSlides);
-
-
+        $sortedSlides.forEach(function (slide) {
+            $slider.slick('slickAdd', slide);
+        });
     }
 
     // trim empty spacing from logo display order textarea
