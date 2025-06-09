@@ -217,11 +217,11 @@ $slcDisableLazyLoadClass = esc_attr(get_post_meta($post->ID, 'slc_carousel_disab
         </th>
         <td>
             <input type="number" name="slc_carousel_autoplay_speed" id="slc-carousel-autoplay-speed"
-                   value="<?php if (empty($slcAutoplaySpeed)) {
+                   value="<?php if (!isset($slcAutoplaySpeed)) {
                        esc_attr_e($options['slc_carousel_autoplay_speed']);
                    } else {
                        esc_attr_e($slcAutoplaySpeed);
-                   } ?>" min="1" step="1"/>
+                   } ?>" min="0" step="1"/>
             <p class="description"><?php _e('Autoplay speed in milliseconds. Default is', 'simple-logo-carousel'); ?>
                 <strong>3000</strong>.</p>
         </td>

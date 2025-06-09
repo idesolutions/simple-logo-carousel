@@ -3,7 +3,7 @@
 Plugin Name: Simple Logo Carousel
 Plugin URI: https://www.ideinteractive.com/products/simple-logo-carousel/
 Description: A simplistic carousel to elegantly display logos. Powered by <a href="http://kenwheeler.github.io/slick/">slick</a>.
-Version: 1.9.2
+Version: 1.9.3
 Author: IDE Interactive
 Author URI: https://www.ideinteractive.com/
 License: GPLv2 or later

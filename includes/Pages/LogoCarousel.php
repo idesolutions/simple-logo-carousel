@@ -242,7 +242,7 @@ class LogoCarousel extends BaseController
         update_post_meta($post->ID, 'slc_carousel_autoplay', sanitize_text_field($_POST['slc_carousel_autoplay']));
 
         if (is_numeric($_POST['slc_carousel_autoplay_speed'])) {
-            if (sanitize_text_field($_POST['slc_carousel_autoplay_speed']) <= 0 || empty($_POST['slc_carousel_autoplay_speed'])) {
+            if (sanitize_text_field($_POST['slc_carousel_autoplay_speed']) < 0 || !isset($_POST['slc_carousel_autoplay_speed'])) {
                 update_post_meta($post->ID, 'slc_carousel_autoplay_speed', '3000');
             } else {
                 update_post_meta($post->ID, 'slc_carousel_autoplay_speed', sanitize_text_field($_POST['slc_carousel_autoplay_speed']));

@@ -4,7 +4,7 @@ Tags: logo carousel, logo slider, carousel, slider
 Requires at least: 5.0
 Tested up to: 6.4.2
 Requires PHP: 7.4
-Stable tag: 1.9.2
+Stable tag: 1.9.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -44,6 +44,10 @@ No. Simple Logo Carousel is a free plugin and at this time, will not have a prem
 6. View of the logo carousel on the website.
 
 == Changelog ==
+
+= 1.9.3 =
+
+* Allow Autoplay Speed to be saved as 0 to allow for continuous scrolling when Animation is set to Linear.
 
 = 1.9.2 =
 

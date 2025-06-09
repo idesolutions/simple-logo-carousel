@@ -212,11 +212,11 @@ $slcDisableLazyLoadClass = esc_attr($options['slc_carousel_disable_lazy_load_cla
                 </th>
                 <td>
                     <input type="number" name="slc_carousel_autoplay_speed" id="slc-carousel-autoplay-speed"
-                           value="<?php if (empty($slcAutoplaySpeed)) {
+                           value="<?php if (!isset($slcAutoplaySpeed)) {
                                echo '3000';
                            } else {
                                esc_attr_e($slcAutoplaySpeed);
-                           } ?>" min="1" step="1"/>
+                           } ?>" min="0" step="1"/>
                     <p class="description"><?php _e('Autoplay speed in milliseconds. Default is', 'simple-logo-carousel'); ?>
                         <strong>3000</strong>.</p>
                 </td>
