@@ -26,12 +26,15 @@ class Shortcode extends BaseController
     function carousel_shortcode($atts = [])
     {
         // define attributes and their defaults
-        extract(shortcode_atts(array(
-            'id' => ''
-        ), $atts));
+        $atts = shortcode_atts(array(
+        'id' => ''
+        ), $atts);
+
+        $id = isset($atts['id']) ? absint($atts['id']) : false;
+        
 
         // if not id is found
-        if (empty($id)) {
+        if (!$id) {
             return '<p>Please make sure your carousel shortcode contains an ID.</p>';
         } else {
             // enqueue our scripts
