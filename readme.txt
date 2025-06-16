@@ -45,6 +45,10 @@ No. Simple Logo Carousel is a free plugin and at this time, will not have a prem
 
 == Changelog ==
 
+= 1.9.4 =
+
+* Fixed vulnerability for Stored Cross-Site Scripting via the "id" parameter due to insufficient input sanitization and output escaping.
+
 = 1.9.3 =
 
 * Allow Autoplay Speed to be saved as 0 to allow for continuous scrolling when Animation is set to Linear.
