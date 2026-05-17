@@ -2,9 +2,9 @@
 Contributors: tvledesign, ideinteractive
 Tags: logo carousel, logo slider, carousel, slider
 Requires at least: 5.0
-Tested up to: 6.8.1
-Requires PHP: 7.4
-Stable tag: 1.9.3
+Tested up to: 6.9
+Requires PHP: 8.0
+Stable tag: 1.9.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,6 +20,7 @@ Simple Logo Carousel is a free WordPress plugin powered by [slick](http://kenwhe
 * Link logos to an internal or external link.
 * Categorize logos for different carousels.
 * Display carousels anywhere on your site via a shortcode.
+* Randomize logo order on each page load.
 
 == Installation ==
 1. Upload the entire simple-logo-carousel folder to the /wp-content/plugins/ directory.
@@ -44,6 +45,11 @@ No. Simple Logo Carousel is a free plugin and at this time, will not have a prem
 6. View of the logo carousel on the website.
 
 == Changelog ==
+
+= 1.9.5 =
+
+* Added "Random Order" option to randomize logo display order on each page load.
+* Updated "Tested up to" WordPress version 6.9.
 
 = 1.9.4 =
 

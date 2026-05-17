@@ -38,12 +38,17 @@ if ($pagenow != 'post-new.php') {
             array_push($taxonomyQuery, $taxonomy);
         }
 
+        // check if random order is enabled
+        $random_order = get_post_meta(get_the_ID(), 'slc_carousel_random_order', true);
+        $orderby = ($random_order === 'true') ? 'rand' : 'date';
+
         // start a query to get the logos
         $query = new \WP_Query(
             array(
                 'post_type' => 'slc_logo',
                 'posts_per_page' => -1,
                 'post_status' => 'publish',
+                'orderby' => $orderby,
                 'tax_query' => array(
                     'relation' => 'OR',
                     $taxonomyQuery
@@ -51,12 +56,17 @@ if ($pagenow != 'post-new.php') {
             )
         );
     } else {
+        // check if random order is enabled
+        $random_order = get_post_meta(get_the_ID(), 'slc_carousel_random_order', true);
+        $orderby = ($random_order === 'true') ? 'rand' : 'date';
+
         // start a query to get the logos
         $query = new \WP_Query(
             array(
                 'post_type' => 'slc_logo',
                 'posts_per_page' => -1,
                 'post_status' => 'publish',
+                'orderby' => $orderby,
             )
         );
     }

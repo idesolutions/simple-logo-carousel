@@ -51,6 +51,7 @@ class DefaultSettings extends BaseController
         $new_options['slc_carousel_pause_on_hover'] = 'true';
         $new_options['slc_carousel_pause_on_focus'] = 'true';
         $new_options['slc_carousel_speed'] = 1000;
+        $new_options['slc_carousel_random_order'] = 'false';
         $new_options['slc_carousel_swipe'] = 'true';
         $new_options['slc_carousel_slide_vertical_alignment'] = 'center';
         $new_options['slc_carousel_disable_lazy_load_class'] = '';

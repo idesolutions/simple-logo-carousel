@@ -77,12 +77,17 @@ class Shortcode extends BaseController
                     array_push($taxonomyQuery, $taxonomy);
                 }
 
+                // check if random order is enabled
+                $random_order = get_post_meta($id, 'slc_carousel_random_order', true);
+                $orderby = ($random_order === 'true') ? 'rand' : 'date';
+
                 // start a query to get the logos
                 $query = new \WP_Query(
                     array(
                         'post_type' => 'slc_logo',
                         'posts_per_page' => -1,
                         'post_status' => 'publish',
+                        'orderby' => $orderby,
                         'tax_query' => array(
                             'relation' => 'OR',
                             $taxonomyQuery
@@ -90,12 +95,17 @@ class Shortcode extends BaseController
                     )
                 );
             } else {
+                // check if random order is enabled
+                $random_order = get_post_meta($id, 'slc_carousel_random_order', true);
+                $orderby = ($random_order === 'true') ? 'rand' : 'date';
+
                 // start a query to get the logos
                 $query = new \WP_Query(
                     array(
                         'post_type' => 'slc_logo',
                         'posts_per_page' => -1,
                         'post_status' => 'publish',
+                        'orderby' => $orderby,
                     )
                 );
             }
@@ -270,6 +280,7 @@ class Shortcode extends BaseController
         $pauseOnFocus = esc_html(get_post_meta($id, 'slc_carousel_pause_on_focus', true));
         $pauseOnHover = esc_html(get_post_meta($id, 'slc_carousel_pause_on_hover', true));
         $speed = esc_html(get_post_meta($id, 'slc_carousel_speed', true));
+        $randomOrder = esc_html(get_post_meta($id, 'slc_carousel_random_order', true));
         $swipe = esc_html(get_post_meta($id, 'slc_carousel_swipe', true));
 
         // add our carousel options into an array
@@ -285,6 +296,7 @@ class Shortcode extends BaseController
             'pauseOnFocus' => $pauseOnFocus == 'true',
             'pauseOnHover' => $pauseOnHover == 'true',
             'speed' => intval($speed),
+            'randomOrder' => $randomOrder == 'true',
             'swipe' => $swipe == 'true'
         );
 

@@ -30,6 +30,7 @@ $slcDraggable = esc_attr(get_post_meta($post->ID, 'slc_carousel_draggable', true
 $slcPauseOnHover = esc_attr(get_post_meta($post->ID, 'slc_carousel_pause_on_hover', true));
 $slcPauseOnFocus = esc_attr(get_post_meta($post->ID, 'slc_carousel_pause_on_focus', true));
 $slcSpeed = esc_attr(get_post_meta($post->ID, 'slc_carousel_speed', true));
+$slcRandomOrder = esc_attr(get_post_meta($post->ID, 'slc_carousel_random_order', true));
 $slcSwipe = esc_attr(get_post_meta($post->ID, 'slc_carousel_swipe', true));
 $slcSlideVerticalAlignment = esc_attr(get_post_meta($post->ID, 'slc_carousel_slide_vertical_alignment', true));
 $slcDisableLazyLoadClass = esc_attr(get_post_meta($post->ID, 'slc_carousel_disable_lazy_load_class', true));
@@ -677,6 +678,41 @@ $slcDisableLazyLoadClass = esc_attr(get_post_meta($post->ID, 'slc_carousel_disab
             </select>
             <p class="description"><?php _e('Enable swiping. Default is', 'simple-logo-carousel'); ?>
                 <strong><?php _e('true', 'simple-logo-carousel'); ?></strong>.</p>
+        </td>
+    </tr>
+    <!-- RANDOM ORDER -->
+    <tr>
+        <th>
+            <label for="slc-carousel-random-order"><?php _e('Random Order', 'simple-logo-carousel'); ?></label>
+        </th>
+        <td>
+            <select name="slc_carousel_random_order" id="slc-carousel-random-order">
+                <?php
+                if (empty($slcRandomOrder)) {
+                    ?>
+                    <option value="true" <?php if (esc_attr($options['slc_carousel_random_order']) == 'true') {
+                        echo 'selected';
+                    } ?>><?php _e('True', 'simple-logo-carousel'); ?></option>
+                    <option value="false" <?php if (esc_attr($options['slc_carousel_random_order']) != 'true') {
+                        echo 'selected';
+                    } ?>><?php _e('False', 'simple-logo-carousel'); ?></option>
+                    <?php
+                } else {
+                    ?>
+                    <option value="true"
+                        <?php if ($slcRandomOrder == 'true') {
+                            echo 'selected';
+                        } ?>><?php _e('True', 'simple-logo-carousel'); ?></option>
+                    <option value="false"
+                        <?php if ($slcRandomOrder != 'true') {
+                            echo 'selected';
+                        } ?>><?php _e('False', 'simple-logo-carousel'); ?></option>
+                    <?php
+                }
+                ?>
+            </select>
+            <p class="description"><?php _e('Display logos in random order. Default is', 'simple-logo-carousel'); ?>
+                <strong><?php _e('false', 'simple-logo-carousel'); ?></strong>.</p>
         </td>
     </tr>
     <!-- DISABLE LAZY LOAD CLASS -->

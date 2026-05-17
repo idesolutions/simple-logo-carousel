@@ -419,6 +419,7 @@ class LogoCarousel extends BaseController
         $pauseOnFocus = esc_html(get_post_meta($id, 'slc_carousel_pause_on_focus', true));
         $pauseOnHover = esc_html(get_post_meta($id, 'slc_carousel_pause_on_hover', true));
         $speed = esc_html(get_post_meta($id, 'slc_carousel_speed', true));
+        $randomOrder = esc_html(get_post_meta($id, 'slc_carousel_random_order', true));
         $swipe = esc_html(get_post_meta($id, 'slc_carousel_swipe', true));
 
         // add our carousel options into an array
@@ -434,6 +435,7 @@ class LogoCarousel extends BaseController
             'pauseOnFocus' => $pauseOnFocus == 'true',
             'pauseOnHover' => $pauseOnHover == 'true',
             'speed' => intval($speed),
+            'randomOrder' => $randomOrder == 'true',
             'swipe' => $swipe == 'true'
         );
 

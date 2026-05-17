@@ -31,10 +31,22 @@ jQuery(document).ready(function () {
             }
         });
 
-        // sort our logos
-        jQuery('.slc-carousel-id-' + id).find('.slc-logo').sort(function (a, b) {
-            return jQuery(a).attr('data-order') - jQuery(b).attr('data-order');
-        }).appendTo('.slc-carousel-id-' + id).ready(function () {
+        // sort or shuffle our logos based on randomOrder setting
+        let logos = jQuery('.slc-carousel-id-' + id).find('.slc-logo');
+
+        if (params['options'].randomOrder === true) {
+            // Fisher-Yates shuffle algorithm
+            logos = logos.sort(function() {
+                return 0.5 - Math.random();
+            });
+        } else {
+            // sort by data-order attribute
+            logos = logos.sort(function (a, b) {
+                return jQuery(a).attr('data-order') - jQuery(b).attr('data-order');
+            });
+        }
+
+        logos.appendTo('.slc-carousel-id-' + id).ready(function () {
             // initialize our slick with our logo carousel
             jQuery('.slc-carousel-id-' + id).slick({
                 autoplay: params['options'].autoplay,

@@ -142,10 +142,11 @@ class Settings extends BaseController
         $options['slc_carousel_draggable'] = isset($_POST['slc_carousel_draggable']) ? sanitize_text_field($_POST['slc_carousel_draggable']) : 'true';
         $options['slc_carousel_pause_on_hover'] = isset($_POST['slc_carousel_pause_on_hover']) ? sanitize_text_field($_POST['slc_carousel_pause_on_hover']) : 'true';
         $options['slc_carousel_pause_on_focus'] = isset($_POST['slc_carousel_pause_on_focus']) ? sanitize_text_field($_POST['slc_carousel_pause_on_focus']) : 'true';
-        $options['slc_carousel_speed'] = isset($_POST['slc_carousel_speed']) ? intval($_POST['slc_carousel_speed']) : 1000;
-        $options['slc_carousel_swipe'] = isset($_POST['slc_carousel_swipe']) ? sanitize_text_field($_POST['slc_carousel_swipe']) : 'true';
-        $options['slc_carousel_slide_vertical_alignment'] = isset($_POST['slc_carousel_slide_vertical_alignment']) ? sanitize_text_field($_POST['slc_carousel_slide_vertical_alignment']) : 'center';
-        $options['slc_carousel_disable_lazy_load_class'] = isset($_POST['slc_carousel_disable_lazy_load_class']) ? sanitize_text_field($_POST['slc_carousel_disable_lazy_load_class']) : '';
+        $options['slc_carousel_speed'] = isset($_POST['slc_carousel_speed']) ? intval(wp_unslash($_POST['slc_carousel_speed'])) : 1000;
+        $options['slc_carousel_random_order'] = isset($_POST['slc_carousel_random_order']) ? sanitize_text_field(wp_unslash($_POST['slc_carousel_random_order'])) : 'false';
+        $options['slc_carousel_swipe'] = isset($_POST['slc_carousel_swipe']) ? sanitize_text_field(wp_unslash($_POST['slc_carousel_swipe'])) : 'true';
+        $options['slc_carousel_slide_vertical_alignment'] = isset($_POST['slc_carousel_slide_vertical_alignment']) ? sanitize_text_field(wp_unslash($_POST['slc_carousel_slide_vertical_alignment'])) : 'center';
+        $options['slc_carousel_disable_lazy_load_class'] = isset($_POST['slc_carousel_disable_lazy_load_class']) ? sanitize_text_field(wp_unslash($_POST['slc_carousel_disable_lazy_load_class'])) : '';
 
         // store updated options array to database
         update_option('slc_initial_carousel_options', $options);
