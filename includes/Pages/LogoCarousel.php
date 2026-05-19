@@ -300,6 +300,7 @@ class LogoCarousel extends BaseController
         }
 
         update_post_meta($post->ID, 'slc_carousel_swipe', sanitize_text_field($_POST['slc_carousel_swipe']));
+        update_post_meta($post->ID, 'slc_carousel_random_order', sanitize_text_field($_POST['slc_carousel_random_order']));
 
         return $post;
     }
