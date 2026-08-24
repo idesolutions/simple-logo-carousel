@@ -1,5 +1,5 @@
 === Simple Logo Carousel ===
-Contributors: tvledesign, ideinteractive
+Contributors: idesolutionsllc, ideinteractive
 Tags: logo carousel, logo slider, carousel, slider
 Requires at least: 5.0
 Tested up to: 6.9
@@ -50,6 +50,11 @@ No. Simple Logo Carousel is a free plugin and at this time, will not have a prem
 
 * Added "Random Order" option to randomize logo display order on each page load.
 * Updated "Tested up to" WordPress version 6.9.
+* Updated plugin ownership and contributor metadata for IDE Solutions LLC.
+* Hardened post and settings saves with stricter capability, nonce, sanitization, and validation handling.
+* Hardened front-end output escaping and inline CSS value validation.
+* Added safer external-link handling and direct-access guards.
+* Updated uninstall cleanup to use WordPress APIs and the correct logo taxonomy.
 
 = 1.9.4 =
 

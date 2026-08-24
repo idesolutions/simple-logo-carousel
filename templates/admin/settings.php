@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || exit;
+
 
 // get our data information
 $options = get_option('slc_initial_carousel_options');
@@ -30,9 +32,10 @@ $slcSlideVerticalAlignment = esc_attr($options['slc_carousel_slide_vertical_alig
 $slcDisableLazyLoadClass = esc_attr($options['slc_carousel_disable_lazy_load_class']);
 ?>
 
-<?php if (isset($_GET['message']) && $_GET['message'] == '1') { ?>
+<?php $slc_message = isset($_GET['message']) ? sanitize_key(wp_unslash($_GET['message'])) : ''; ?>
+<?php if ('1' === $slc_message) { ?>
     <div id='message' class='updated fade'>
-        <p><strong><?php _e('Settings Updated', 'tennis-plus-court-booking'); ?></strong></p>
+        <p><strong><?php _e('Settings Updated', 'simple-logo-carousel'); ?></strong></p>
     </div>
 <?php } ?>
 

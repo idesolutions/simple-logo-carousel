@@ -1,3 +1,4 @@
+<?php defined( 'ABSPATH' ) || exit; ?>
 <img class="slc-how-to-image"
      src="<?php echo esc_url($this->plugin_url . 'assets/admin/images/simple-logo-carousel-logo.svg'); ?>"/>
 <p><?php _e('To create a logo carousel, follow the steps below:', 'simple-logo-carousel'); ?></p>

@@ -2,11 +2,13 @@
 /**
  * Manages our plugin deactivation
  *
- * @package ide-interactive/simple-logo-carousel
+ * @package ide-solutions/simple-logo-carousel
  */
 
 namespace PLSimpleLogoCarousel\Base;
 
+
+defined( 'ABSPATH' ) || exit;
 class Deactivate
 {
     /**

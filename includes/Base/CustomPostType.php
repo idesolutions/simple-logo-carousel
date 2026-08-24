@@ -3,11 +3,13 @@
 /**
  * Registers our custom post types
  *
- * @package ide-interactive/simple-logo-carousel
+ * @package ide-solutions/simple-logo-carousel
  */
 
 namespace PLSimpleLogoCarousel\Base;
 
+
+defined( 'ABSPATH' ) || exit;
 class CustomPostType
 {
     /**

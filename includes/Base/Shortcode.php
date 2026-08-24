@@ -3,11 +3,13 @@
 /**
  * Registers our shortcodes
  *
- * @package ide-interactive/simple-logo-carousel
+ * @package ide-solutions/simple-logo-carousel
  */
 
 namespace PLSimpleLogoCarousel\Base;
 
+
+defined( 'ABSPATH' ) || exit;
 class Shortcode extends BaseController
 {
     /**
@@ -30,18 +32,18 @@ class Shortcode extends BaseController
         'id' => ''
         ), $atts);
 
-        $id = isset($atts['id']) ? absint($atts['id']) : false;
+        $id = isset($atts['id']) ? absint($atts['id']) : 0;
         
 
-        // if not id is found
-        if (!$id) {
+        // Only render published carousel records.
+        if (!$id || 'slc_carousel' !== get_post_type($id) || 'publish' !== get_post_status($id)) {
             return '<p>Please make sure your carousel shortcode contains an ID.</p>';
         } else {
             // enqueue our scripts
             wp_enqueue_script('jquery');
-            wp_enqueue_script('slc_slick_js', esc_url($this->plugin_url . 'assets/public/libs/slick/slick.min.js'), true);
+            wp_enqueue_script('slc_slick_js', esc_url($this->plugin_url . 'assets/public/libs/slick/slick.min.js'), array('jquery'), null, true);
             wp_localize_script('slc_slick_js', 'slc_carousel_params_' . $id, $this->get_carousel_options($id));
-            wp_enqueue_script('slc_main_js', esc_url($this->plugin_url . 'assets/public/js/slc-main.js'), true);
+            wp_enqueue_script('slc_main_js', esc_url($this->plugin_url . 'assets/public/js/slc-main.js'), array('jquery', 'slc_slick_js'), null, true);
 
             // enqueue our styles
             wp_enqueue_style('slc_main_css', esc_url($this->plugin_url . 'assets/public/css/slc-main.css'));
@@ -116,7 +118,7 @@ class Shortcode extends BaseController
             // if the query have posts
             if ($query->have_posts()) {
 
-                $output .= '<div class="slc-logos slc-carousel-id-' . $id . '" data-id="' . $id . '">';
+                $output .= '<div class="slc-logos slc-carousel-id-' . esc_attr($id) . '" data-id="' . esc_attr($id) . '">';
 
                 // get our logo display order
                 $slcLogoDisplayOrder = get_post_meta($id, 'slc_carousel_logo_display_order', true);
@@ -139,12 +141,14 @@ class Shortcode extends BaseController
                     }
 
                     // create a container for an individual logo
-                    $output .= '<div class="slc-logo" data-order="' . $order . '">';
+                    $output .= '<div class="slc-logo" data-order="' . esc_attr((int) $order) . '">';
 
                     // if there is a link
                     if (!empty(esc_url(get_post_meta(get_the_id(), 'slc_external_url', true)))) {
                         // output the link
-                        $output .= '<a href="' . esc_url(get_post_meta(get_the_id(), 'slc_external_url', true)) . '" target="' . esc_html(get_post_meta(get_the_id(), 'slc_url_target', true)) . '">';
+                        $target = Security::url_target(get_post_meta(get_the_id(), 'slc_url_target', true));
+                        $rel = '_blank' === $target ? ' rel="noopener noreferrer"' : '';
+                        $output .= '<a href="' . esc_url(get_post_meta(get_the_id(), 'slc_external_url', true)) . '" target="' . esc_attr($target) . '"' . $rel . '>';
                     }
 
                     // if there is an alt text
@@ -182,9 +186,9 @@ class Shortcode extends BaseController
                     $output .= '">';
 
                     if (empty(esc_attr(get_post_meta($id, 'slc_carousel_disable_lazy_load_class', true)))) {
-                        $output .= '<img src="' . get_the_post_thumbnail_url(get_the_id(), 'full') . '" alt="' . $altText . '" class="slc-logo-img"/>';
+                        $output .= '<img src="' . esc_url(get_the_post_thumbnail_url(get_the_id(), 'full')) . '" alt="' . esc_attr($altText) . '" class="slc-logo-img"/>';
                     } else {
-                        $output .= '<img src="' . get_the_post_thumbnail_url(get_the_id(), 'full') . '" alt="' . $altText . '" class="slc-logo-img ' . esc_attr(get_post_meta($id, 'slc_carousel_disable_lazy_load_class', true)) . '"/>';
+                        $output .= '<img src="' . esc_url(get_the_post_thumbnail_url(get_the_id(), 'full')) . '" alt="' . esc_attr($altText) . '" class="slc-logo-img ' . esc_attr(Security::class_list(get_post_meta($id, 'slc_carousel_disable_lazy_load_class', true))) . '"/>';
                     }
 
                     // if there is a hover text
@@ -200,7 +204,7 @@ class Shortcode extends BaseController
                         // if there is a title on the logo
                         if (get_the_title() != '' && get_the_title() != null) {
                             // output the title
-                            $output .= '<p class="slc-logo-title">' . get_the_title() . '</p>';
+                            $output .= '<p class="slc-logo-title">' . esc_html(get_the_title()) . '</p>';
                         }
                     }
 
@@ -230,15 +234,15 @@ class Shortcode extends BaseController
     function get_carousel_css($id)
     {
         // get our carousel options
-        $titleColor = esc_html(get_post_meta($id, 'slc_carousel_title_color', true));
-        $hoverTextColor = esc_html(get_post_meta($id, 'slc_carousel_hover_text_color', true));
-        $hoverTextBackgroundColor = esc_html(get_post_meta($id, 'slc_carousel_hover_text_background_color', true));
-        $hoverTextBackgroundColorOpacity = esc_html(get_post_meta($id, 'slc_carousel_hover_text_background_color_opacity', true));
-        $slideVerticalAlignment = esc_html(get_post_meta($id, 'slc_carousel_slide_vertical_alignment', true));
-        $arrowImageMaxWidth = esc_html(get_post_meta($id, 'slc_carousel_arrow_image_max_width', true));
-        $arrowColor = esc_html(get_post_meta($id, 'slc_carousel_arrow_color', true));
-        $arrowSize = esc_html(get_post_meta($id, 'slc_carousel_arrow_size', true));
-        $arrowOffset = esc_html(get_post_meta($id, 'slc_carousel_arrow_offset', true));
+        $titleColor = Security::color(get_post_meta($id, 'slc_carousel_title_color', true), '#222222');
+        $hoverTextColor = Security::color(get_post_meta($id, 'slc_carousel_hover_text_color', true), '#222222');
+        $hoverTextBackgroundColor = Security::color(get_post_meta($id, 'slc_carousel_hover_text_background_color', true), '#ffffff');
+        $hoverTextBackgroundColorOpacity = Security::opacity(get_post_meta($id, 'slc_carousel_hover_text_background_color_opacity', true), 0.8);
+        $slideVerticalAlignment = Security::vertical_alignment(get_post_meta($id, 'slc_carousel_slide_vertical_alignment', true));
+        $arrowImageMaxWidth = Security::css_dimension(get_post_meta($id, 'slc_carousel_arrow_image_max_width', true), '50px');
+        $arrowColor = Security::color(get_post_meta($id, 'slc_carousel_arrow_color', true), '#222222');
+        $arrowSize = Security::css_dimension(get_post_meta($id, 'slc_carousel_arrow_size', true), '50px');
+        $arrowOffset = Security::css_dimension(get_post_meta($id, 'slc_carousel_arrow_offset', true), '-10px');
 
         // create our css output
         $cssOutput = ".slc-carousel-id-{$id} .slc-logo-title { color: {$titleColor}; } .slc-carousel-id-{$id}.slc-logos { padding: 0 } .slc-carousel-id-{$id} .slc-hover-text { color: {$hoverTextColor}; } .slc-carousel-id-{$id} .slc-logo-container:before { background-color: {$hoverTextBackgroundColor}; opacity: {$hoverTextBackgroundColorOpacity}; } .slc-carousel-id-{$id}.slick-initialized .slick-track { display: flex; align-items: {$slideVerticalAlignment}; }";
@@ -270,12 +274,12 @@ class Shortcode extends BaseController
 
         // if we are using custom arrows
         if (esc_html(get_post_meta($id, 'slc_carousel_custom_arrows', true)) != 'false') {
-            $prevArrow = '<img src="' . esc_attr(get_post_meta($id, 'slc_carousel_left_arrow_image', true)) . '" class="slick-prev slick-custom-arrow" alt="' . __('Arrow to go to previous logo on carousel.', 'simple-logo-carousel') . '"/>';
-            $nextArrow = '<img src="' . esc_attr(get_post_meta($id, 'slc_carousel_right_arrow_image', true)) . '" class="slick-next slick-custom-arrow" alt="' . __('Arrow to go to next logo on carousel.', 'simple-logo-carousel') . '"/>';
+            $prevArrow = '<img src="' . esc_url(get_post_meta($id, 'slc_carousel_left_arrow_image', true)) . '" class="slick-prev slick-custom-arrow" alt="' . esc_attr__('Arrow to go to previous logo on carousel.', 'simple-logo-carousel') . '"/>';
+            $nextArrow = '<img src="' . esc_url(get_post_meta($id, 'slc_carousel_right_arrow_image', true)) . '" class="slick-next slick-custom-arrow" alt="' . esc_attr__('Arrow to go to next logo on carousel.', 'simple-logo-carousel') . '"/>';
         }
 
         $centerMode = esc_html(get_post_meta($id, 'slc_carousel_center_mode', true));
-        $cssEase = esc_html(get_post_meta($id, 'slc_carousel_animation', true));
+        $cssEase = Security::animation(get_post_meta($id, 'slc_carousel_animation', true));
         $draggable = esc_html(get_post_meta($id, 'slc_carousel_draggable', true));
         $pauseOnFocus = esc_html(get_post_meta($id, 'slc_carousel_pause_on_focus', true));
         $pauseOnHover = esc_html(get_post_meta($id, 'slc_carousel_pause_on_hover', true));

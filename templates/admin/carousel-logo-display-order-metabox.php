@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || exit;
+
 
 // get our post
 global $post;
@@ -152,19 +154,11 @@ TEMPLATE;
                     }
                 }
             }
-
             $plugin_path = plugin_dir_url(dirname(__FILE__, 2)) . '/assets/admin/images/sort-solid.svg';
-            $output .= <<<TEMPLATE
-            <tr class="slc-draggable" data-order="$order" data-id="$id">
-                <td>
-                    <img class="slc-sort-btn" src="$plugin_path">
-                </td>
-                <td>
-                    <img src="$image" alt="$altText" />
-                    <p>$title</p>
-                </td>
-            </tr>
-TEMPLATE;
+            $output .= '<tr class="slc-draggable" data-order="' . esc_attr((int) $order) . '" data-id="' . esc_attr((int) $id) . '">';
+            $output .= '<td><img class="slc-sort-btn" src="' . esc_url($plugin_path) . '" alt="" /></td>';
+            $output .= '<td><img src="' . esc_url($image) . '" alt="' . esc_attr($altText) . '" /><p>' . esc_html($title) . '</p></td>';
+            $output .= '</tr>';
         }
 
         $output .= '</tbody></table>';
@@ -175,9 +169,9 @@ TEMPLATE;
         $post = $saved_post;
     }
 
-    echo $output;
+    echo wp_kses_post($output);
 } else {
-    echo '<p>' . __('To rearrange the logos, please make sure you save your post first', 'simple-logo-carousel') . '.</p>';
+    echo '<p>' . esc_html__('To rearrange the logos, please make sure you save your post first', 'simple-logo-carousel') . '.</p>';
 }
 ?>
 

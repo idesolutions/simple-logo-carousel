@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Simple Logo Carousel
-Plugin URI: https://www.ideinteractive.com/products/simple-logo-carousel/
+Plugin URI: https://idesolutions.io/products/simple-logo-carousel/
 Description: A simplistic carousel to elegantly display logos. Powered by <a href="http://kenwheeler.github.io/slick/">slick</a>.
 Version: 1.9.5
-Author: IDE Interactive
-Author URI: https://www.ideinteractive.com/
+Author: IDE Solutions LLC
+Author URI: https://idesolutions.io/
 License: GPLv2 or later
 License URI:  https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 5.0

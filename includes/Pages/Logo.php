@@ -4,12 +4,15 @@
  * Manages and handles everything relating to the logo post type
  * view which also includes rendering and saving the page data
  *
- * @package ide-interactive/simple-logo-carousel
+ * @package ide-solutions/simple-logo-carousel
  */
 
 namespace PLSimpleLogoCarousel\Pages;
 
+
+defined( 'ABSPATH' ) || exit;
 use PLSimpleLogoCarousel\Base\BaseController;
+use PLSimpleLogoCarousel\Base\Security;
 
 class Logo extends BaseController
 {
@@ -85,23 +88,28 @@ class Logo extends BaseController
      */
     function save_logo_meta($post_id, $post)
     {
-        // return if the user doesn't have edit permissions.
-        if (!current_user_can('edit_simple_logo_carousel', $post_id)) {
+        if (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id) || 'slc_logo' !== $post->post_type) {
             return;
         }
 
-        // verify taxonomies meta box nonce
-        if (!isset($_POST['slc_cpt']) || !wp_verify_nonce(sanitize_key($_POST['slc_cpt']), 'verify_slc')) {
+        if (!current_user_can('edit_post', $post_id)) {
             return;
         }
 
-        // update and save our meta data
-        update_post_meta($post->ID, 'slc_external_url', sanitize_url($_POST['slc_external_url']));
-        update_post_meta($post->ID, 'slc_url_target', sanitize_text_field($_POST['slc_url_target']));
-        update_post_meta($post->ID, 'slc_alt_text', sanitize_text_field($_POST['slc_alt_text']));
-        update_post_meta($post->ID, 'slc_hover_text', sanitize_text_field($_POST['slc_hover_text']));
+        $nonce = isset($_POST['slc_cpt']) ? sanitize_text_field(wp_unslash($_POST['slc_cpt'])) : '';
+        if (!$nonce || !wp_verify_nonce($nonce, 'verify_slc')) {
+            return;
+        }
 
-        return $post;
+        $external_url = isset($_POST['slc_external_url']) ? esc_url_raw(wp_unslash($_POST['slc_external_url'])) : '';
+        $url_target   = isset($_POST['slc_url_target']) ? Security::url_target(wp_unslash($_POST['slc_url_target'])) : '_self';
+        $alt_text     = isset($_POST['slc_alt_text']) ? sanitize_text_field(wp_unslash($_POST['slc_alt_text'])) : '';
+        $hover_text   = isset($_POST['slc_hover_text']) ? sanitize_text_field(wp_unslash($_POST['slc_hover_text'])) : '';
+
+        update_post_meta($post_id, 'slc_external_url', $external_url);
+        update_post_meta($post_id, 'slc_url_target', $url_target);
+        update_post_meta($post_id, 'slc_alt_text', $alt_text);
+        update_post_meta($post_id, 'slc_hover_text', $hover_text);
     }
 
     /**
@@ -138,10 +146,10 @@ class Logo extends BaseController
         // if there is a logo column
         if ('logo' === $column) {
             // echo out the logo
-            echo get_the_post_thumbnail($post_id, array(80, 80));
+            echo wp_kses_post(get_the_post_thumbnail($post_id, array(80, 80)));
         } // if there is a link url column
         else if ('link_url' === $column) {
-            echo '<a href="' . esc_url(get_post_meta($post_id, 'slc_external_url', true)) . '" target="_blank">' . esc_url(get_post_meta($post_id, 'slc_external_url', true)) . '</a>';
+            echo '<a href="' . esc_url(get_post_meta($post_id, 'slc_external_url', true)) . '" target="_blank" rel="noopener noreferrer">' . esc_html(get_post_meta($post_id, 'slc_external_url', true)) . '</a>';
         } // if there is a target column
         else if ('target' === $column) {
             $target = esc_html(get_post_meta($post_id, 'slc_url_target', true));
@@ -156,7 +164,7 @@ class Logo extends BaseController
             if ($altText == '') {
                 echo '<em>' . esc_html('No alt text was provided.', 'simple-logo-carousel') . '</em>';
             } else {
-                esc_html_e($altText);
+                echo esc_html($altText);
             }
         } // if there is a category column
         else if ('category' === $column) {
@@ -174,7 +182,7 @@ class Logo extends BaseController
                 $categories = substr($categories, 0, -2);
 
                 // display it
-                esc_html_e($categories);
+                echo esc_html($categories);
             } else {
                 // else inform there is not one
                 echo '<em>' . esc_html__('No category found.', 'simple-logo-carousel') . '</em>';

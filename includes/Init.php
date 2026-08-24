@@ -1,10 +1,12 @@
 <?php
 /**
- * @package ide-interactive/simple-logo-carousel
+ * @package ide-solutions/simple-logo-carousel
  */
 
 namespace PLSimpleLogoCarousel;
 
+
+defined( 'ABSPATH' ) || exit;
 final class Init
 {
     /**

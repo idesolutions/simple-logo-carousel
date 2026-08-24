@@ -4,12 +4,15 @@
  * Manages and handles everything relating to the logo post type
  * view which also includes rendering and saving the page data
  *
- * @package ide-interactive/simple-logo-carousel
+ * @package ide-solutions/simple-logo-carousel
  */
 
 namespace PLSimpleLogoCarousel\Pages;
 
+
+defined( 'ABSPATH' ) || exit;
 use PLSimpleLogoCarousel\Base\BaseController;
+use PLSimpleLogoCarousel\Base\Security;
 
 class LogoCarousel extends BaseController
 {
@@ -185,124 +188,49 @@ class LogoCarousel extends BaseController
      */
     function save_carousel_meta($post_id, $post)
     {
-        // return if the user doesn't have edit permissions.
-        if (!current_user_can('edit_simple_logo_carousel', $post_id)) {
+        if (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id) || 'slc_carousel' !== $post->post_type) {
             return;
         }
 
-        // verify taxonomies meta box nonce
-        if (!isset($_POST['slc_cpt']) || !wp_verify_nonce(sanitize_key($_POST['slc_cpt']), 'verify_slc')) {
+        if (!current_user_can('edit_post', $post_id)) {
             return;
         }
 
-        // update and save our meta data
-        if (empty($_POST['slc_carousel_logo_display_options'])) {
-            update_post_meta($post->ID, 'slc_carousel_logo_display_options', '[{"breakpoint": "default", "show": 1, "scroll": 1}]');
-        } else {
-            update_post_meta($post->ID, 'slc_carousel_logo_display_options', sanitize_text_field($_POST['slc_carousel_logo_display_options']));
+        $nonce = isset($_POST['slc_cpt']) ? sanitize_text_field(wp_unslash($_POST['slc_cpt'])) : '';
+        if (!$nonce || !wp_verify_nonce($nonce, 'verify_slc')) {
+            return;
         }
 
-        if (empty($_POST['slc_carousel_logo_display_order'])) {
-            update_post_meta($post->ID, 'slc_carousel_logo_display_order', '');
-        } else {
-            update_post_meta($post->ID, 'slc_carousel_logo_display_order', sanitize_text_field($_POST['slc_carousel_logo_display_order']));
-        }
+        $post_data = wp_unslash($_POST);
 
-        update_post_meta($post->ID, 'slc_carousel_show_title', sanitize_text_field($_POST['slc_carousel_show_title']));
-
-        if (empty($_POST['slc_carousel_title_color'])) {
-            update_post_meta($post->ID, 'slc_carousel_title_color', '#222222');
-        } else {
-            update_post_meta($post->ID, 'slc_carousel_title_color', sanitize_hex_color($_POST['slc_carousel_title_color']));
-        }
-
-        if (empty($_POST['slc_carousel_hover_text_color'])) {
-            update_post_meta($post->ID, 'slc_carousel_hover_text_color', '#222222');
-        } else {
-            update_post_meta($post->ID, 'slc_carousel_hover_text_color', sanitize_hex_color($_POST['slc_carousel_hover_text_color']));
-        }
-
-        if (empty($_POST['slc_carousel_hover_text_background_color'])) {
-            update_post_meta($post->ID, 'slc_carousel_hover_text_background_color', '#ffffff');
-        } else {
-            update_post_meta($post->ID, 'slc_carousel_hover_text_background_color', sanitize_hex_color($_POST['slc_carousel_hover_text_background_color']));
-        }
-
-        if (is_numeric($_POST['slc_carousel_hover_text_background_color_opacity'])) {
-            if (sanitize_text_field($_POST['slc_carousel_hover_text_background_color_opacity']) <= 0 || empty($_POST['slc_carousel_hover_text_background_color_opacity'])) {
-                update_post_meta($post->ID, 'slc_carousel_hover_text_background_color_opacity', '0.8');
-            } else {
-                update_post_meta($post->ID, 'slc_carousel_hover_text_background_color_opacity', sanitize_text_field($_POST['slc_carousel_hover_text_background_color_opacity']));
-            }
-        } else {
-            update_post_meta($post->ID, 'slc_carousel_hover_text_background_color_opacity', '0.8');
-        }
-
-        update_post_meta($post->ID, 'slc_carousel_accessibility', sanitize_text_field($_POST['slc_carousel_accessibility']));
-        update_post_meta($post->ID, 'slc_carousel_autoplay', sanitize_text_field($_POST['slc_carousel_autoplay']));
-
-        if (is_numeric($_POST['slc_carousel_autoplay_speed'])) {
-            if (sanitize_text_field($_POST['slc_carousel_autoplay_speed']) < 0 || !isset($_POST['slc_carousel_autoplay_speed'])) {
-                update_post_meta($post->ID, 'slc_carousel_autoplay_speed', '3000');
-            } else {
-                update_post_meta($post->ID, 'slc_carousel_autoplay_speed', sanitize_text_field($_POST['slc_carousel_autoplay_speed']));
-            }
-        } else {
-            update_post_meta($post->ID, 'slc_carousel_autoplay_speed', '3000');
-        }
-
-        update_post_meta($post->ID, 'slc_carousel_arrows', sanitize_text_field($_POST['slc_carousel_arrows']));
-
-        if (empty($_POST['slc_carousel_arrow_color'])) {
-            update_post_meta($post->ID, 'slc_carousel_arrow_color', '#222222');
-        } else {
-            update_post_meta($post->ID, 'slc_carousel_arrow_color', sanitize_hex_color($_POST['slc_carousel_arrow_color']));
-        }
-
-        if (empty($_POST['slc_carousel_arrow_size'])) {
-            update_post_meta($post->ID, 'slc_carousel_arrow_size', '50px');
-        } else {
-            update_post_meta($post->ID, 'slc_carousel_arrow_size', sanitize_html_class($_POST['slc_carousel_arrow_size']));
-        }
-
-        if (empty($_POST['slc_carousel_arrow_offset'])) {
-            update_post_meta($post->ID, 'slc_carousel_arrow_offset', '-10px');
-        } else {
-            update_post_meta($post->ID, 'slc_carousel_arrow_offset', sanitize_html_class($_POST['slc_carousel_arrow_offset']));
-        }
-
-        update_post_meta($post->ID, 'slc_carousel_custom_arrows', sanitize_text_field($_POST['slc_carousel_custom_arrows']));
-        update_post_meta($post->ID, 'slc_carousel_left_arrow_image', esc_url_raw($_POST['slc_carousel_left_arrow_image']));
-        update_post_meta($post->ID, 'slc_carousel_right_arrow_image', esc_url_raw($_POST['slc_carousel_right_arrow_image']));
-
-        if (empty($_POST['slc_carousel_arrow_image_max_width'])) {
-            update_post_meta($post->ID, 'slc_carousel_arrow_image_max_width', '50px');
-        } else {
-            update_post_meta($post->ID, 'slc_carousel_arrow_image_max_width', sanitize_html_class($_POST['slc_carousel_arrow_image_max_width']));
-        }
-
-        update_post_meta($post->ID, 'slc_carousel_center_mode', sanitize_text_field($_POST['slc_carousel_center_mode']));
-        update_post_meta($post->ID, 'slc_carousel_animation', sanitize_text_field($_POST['slc_carousel_animation']));
-        update_post_meta($post->ID, 'slc_carousel_draggable', sanitize_text_field($_POST['slc_carousel_draggable']));
-        update_post_meta($post->ID, 'slc_carousel_pause_on_focus', sanitize_text_field($_POST['slc_carousel_pause_on_focus']));
-        update_post_meta($post->ID, 'slc_carousel_pause_on_hover', sanitize_text_field($_POST['slc_carousel_pause_on_hover']));
-        update_post_meta($post->ID, 'slc_carousel_slide_vertical_alignment', sanitize_text_field($_POST['slc_carousel_slide_vertical_alignment']));
-        update_post_meta($post->ID, 'slc_carousel_disable_lazy_load_class', sanitize_text_field($_POST['slc_carousel_disable_lazy_load_class']));
-
-        if (is_numeric($_POST['slc_carousel_speed'])) {
-            if (sanitize_text_field($_POST['slc_carousel_speed']) <= 0 || empty($_POST['slc_carousel_speed'])) {
-                update_post_meta($post->ID, 'slc_carousel_speed', '1000');
-            } else {
-                update_post_meta($post->ID, 'slc_carousel_speed', sanitize_text_field($_POST['slc_carousel_speed']));
-            }
-        } else {
-            update_post_meta($post->ID, 'slc_carousel_speed', '1000');
-        }
-
-        update_post_meta($post->ID, 'slc_carousel_swipe', sanitize_text_field($_POST['slc_carousel_swipe']));
-        update_post_meta($post->ID, 'slc_carousel_random_order', sanitize_text_field($_POST['slc_carousel_random_order']));
-
-        return $post;
+        update_post_meta($post_id, 'slc_carousel_logo_display_options', Security::display_options_json($post_data['slc_carousel_logo_display_options'] ?? ''));
+        update_post_meta($post_id, 'slc_carousel_logo_display_order', Security::display_order_json($post_data['slc_carousel_logo_display_order'] ?? ''));
+        update_post_meta($post_id, 'slc_carousel_show_title', Security::boolean($post_data['slc_carousel_show_title'] ?? 'false'));
+        update_post_meta($post_id, 'slc_carousel_title_color', Security::color($post_data['slc_carousel_title_color'] ?? '', '#222222'));
+        update_post_meta($post_id, 'slc_carousel_hover_text_color', Security::color($post_data['slc_carousel_hover_text_color'] ?? '', '#222222'));
+        update_post_meta($post_id, 'slc_carousel_hover_text_background_color', Security::color($post_data['slc_carousel_hover_text_background_color'] ?? '', '#ffffff'));
+        update_post_meta($post_id, 'slc_carousel_hover_text_background_color_opacity', Security::opacity($post_data['slc_carousel_hover_text_background_color_opacity'] ?? 0.8, 0.8));
+        update_post_meta($post_id, 'slc_carousel_accessibility', Security::boolean($post_data['slc_carousel_accessibility'] ?? 'true', 'true'));
+        update_post_meta($post_id, 'slc_carousel_autoplay', Security::boolean($post_data['slc_carousel_autoplay'] ?? 'true', 'true'));
+        update_post_meta($post_id, 'slc_carousel_autoplay_speed', Security::nonnegative_int($post_data['slc_carousel_autoplay_speed'] ?? 3000, 3000));
+        update_post_meta($post_id, 'slc_carousel_arrows', Security::boolean($post_data['slc_carousel_arrows'] ?? 'false'));
+        update_post_meta($post_id, 'slc_carousel_arrow_color', Security::color($post_data['slc_carousel_arrow_color'] ?? '', '#222222'));
+        update_post_meta($post_id, 'slc_carousel_arrow_size', Security::css_dimension($post_data['slc_carousel_arrow_size'] ?? '', '50px'));
+        update_post_meta($post_id, 'slc_carousel_arrow_offset', Security::css_dimension($post_data['slc_carousel_arrow_offset'] ?? '', '-10px'));
+        update_post_meta($post_id, 'slc_carousel_custom_arrows', Security::boolean($post_data['slc_carousel_custom_arrows'] ?? 'false'));
+        update_post_meta($post_id, 'slc_carousel_left_arrow_image', esc_url_raw($post_data['slc_carousel_left_arrow_image'] ?? ''));
+        update_post_meta($post_id, 'slc_carousel_right_arrow_image', esc_url_raw($post_data['slc_carousel_right_arrow_image'] ?? ''));
+        update_post_meta($post_id, 'slc_carousel_arrow_image_max_width', Security::css_dimension($post_data['slc_carousel_arrow_image_max_width'] ?? '', '50px'));
+        update_post_meta($post_id, 'slc_carousel_center_mode', Security::boolean($post_data['slc_carousel_center_mode'] ?? 'false'));
+        update_post_meta($post_id, 'slc_carousel_animation', Security::animation($post_data['slc_carousel_animation'] ?? 'ease'));
+        update_post_meta($post_id, 'slc_carousel_draggable', Security::boolean($post_data['slc_carousel_draggable'] ?? 'true', 'true'));
+        update_post_meta($post_id, 'slc_carousel_pause_on_focus', Security::boolean($post_data['slc_carousel_pause_on_focus'] ?? 'true', 'true'));
+        update_post_meta($post_id, 'slc_carousel_pause_on_hover', Security::boolean($post_data['slc_carousel_pause_on_hover'] ?? 'true', 'true'));
+        update_post_meta($post_id, 'slc_carousel_slide_vertical_alignment', Security::vertical_alignment($post_data['slc_carousel_slide_vertical_alignment'] ?? 'center'));
+        update_post_meta($post_id, 'slc_carousel_disable_lazy_load_class', Security::class_list($post_data['slc_carousel_disable_lazy_load_class'] ?? ''));
+        update_post_meta($post_id, 'slc_carousel_speed', Security::positive_int($post_data['slc_carousel_speed'] ?? 1000, 1000));
+        update_post_meta($post_id, 'slc_carousel_swipe', Security::boolean($post_data['slc_carousel_swipe'] ?? 'true', 'true'));
+        update_post_meta($post_id, 'slc_carousel_random_order', Security::boolean($post_data['slc_carousel_random_order'] ?? 'false'));
     }
 
     /**
@@ -349,7 +277,7 @@ class LogoCarousel extends BaseController
                 $categories = substr($categories, 0, -2);
 
                 // display it
-                esc_html_e($categories);
+                echo esc_html($categories);
             } else {
                 // else inform there is not one
                 echo '<em>' . esc_html__('No categories were selected, all logos are being shown.', 'simple-logo-carousel') . '</em>';
@@ -370,15 +298,15 @@ class LogoCarousel extends BaseController
     function get_carousel_css($id)
     {
         // get our carousel options
-        $titleColor = esc_html(get_post_meta($id, 'slc_carousel_title_color', true));
-        $hoverTextColor = esc_html(get_post_meta($id, 'slc_carousel_hover_text_color', true));
-        $hoverTextBackgroundColor = esc_html(get_post_meta($id, 'slc_carousel_hover_text_background_color', true));
-        $hoverTextBackgroundColorOpacity = esc_html(get_post_meta($id, 'slc_carousel_hover_text_background_color_opacity', true));
-        $slideVerticalAlignment = esc_html(get_post_meta($id, 'slc_carousel_slide_vertical_alignment', true));
-        $arrowImageMaxWidth = esc_html(get_post_meta($id, 'slc_carousel_arrow_image_max_width', true));
-        $arrowColor = esc_html(get_post_meta($id, 'slc_carousel_arrow_color', true));
-        $arrowSize = esc_html(get_post_meta($id, 'slc_carousel_arrow_size', true));
-        $arrowOffset = esc_html(get_post_meta($id, 'slc_carousel_arrow_offset', true));
+        $titleColor = Security::color(get_post_meta($id, 'slc_carousel_title_color', true), '#222222');
+        $hoverTextColor = Security::color(get_post_meta($id, 'slc_carousel_hover_text_color', true), '#222222');
+        $hoverTextBackgroundColor = Security::color(get_post_meta($id, 'slc_carousel_hover_text_background_color', true), '#ffffff');
+        $hoverTextBackgroundColorOpacity = Security::opacity(get_post_meta($id, 'slc_carousel_hover_text_background_color_opacity', true), 0.8);
+        $slideVerticalAlignment = Security::vertical_alignment(get_post_meta($id, 'slc_carousel_slide_vertical_alignment', true));
+        $arrowImageMaxWidth = Security::css_dimension(get_post_meta($id, 'slc_carousel_arrow_image_max_width', true), '50px');
+        $arrowColor = Security::color(get_post_meta($id, 'slc_carousel_arrow_color', true), '#222222');
+        $arrowSize = Security::css_dimension(get_post_meta($id, 'slc_carousel_arrow_size', true), '50px');
+        $arrowOffset = Security::css_dimension(get_post_meta($id, 'slc_carousel_arrow_offset', true), '-10px');
 
         // create our css output
         $cssOutput = ".slc-carousel-id-{$id} .slc-logo-title { color: {$titleColor}; } .slc-carousel-id-{$id}.slc-logos { padding: 0 } .slc-carousel-id-{$id} .slc-hover-text { color: {$hoverTextColor}; } .slc-carousel-id-{$id} .slc-logo-container:before { background-color: {$hoverTextBackgroundColor}; opacity: {$hoverTextBackgroundColorOpacity}; } .slc-carousel-id-{$id}.slick-initialized .slick-track { display: flex; align-items: {$slideVerticalAlignment}; }";
@@ -410,12 +338,12 @@ class LogoCarousel extends BaseController
 
         // if we are using custom arrows
         if (esc_html(get_post_meta($id, 'slc_carousel_custom_arrows', true)) != 'false') {
-            $prevArrow = '<img src="' . esc_attr(get_post_meta($id, 'slc_carousel_left_arrow_image', true)) . '" class="slick-prev slick-custom-arrow" alt="' . __('Arrow to go to previous logo on carousel.', 'simple-logo-carousel') . '"/>';
-            $nextArrow = '<img src="' . esc_attr(get_post_meta($id, 'slc_carousel_right_arrow_image', true)) . '" class="slick-next slick-custom-arrow" alt="' . __('Arrow to go to next logo on carousel.', 'simple-logo-carousel') . '"/>';
+            $prevArrow = '<img src="' . esc_url(get_post_meta($id, 'slc_carousel_left_arrow_image', true)) . '" class="slick-prev slick-custom-arrow" alt="' . esc_attr__('Arrow to go to previous logo on carousel.', 'simple-logo-carousel') . '"/>';
+            $nextArrow = '<img src="' . esc_url(get_post_meta($id, 'slc_carousel_right_arrow_image', true)) . '" class="slick-next slick-custom-arrow" alt="' . esc_attr__('Arrow to go to next logo on carousel.', 'simple-logo-carousel') . '"/>';
         }
 
         $centerMode = esc_html(get_post_meta($id, 'slc_carousel_center_mode', true));
-        $cssEase = esc_html(get_post_meta($id, 'slc_carousel_animation', true));
+        $cssEase = Security::animation(get_post_meta($id, 'slc_carousel_animation', true));
         $draggable = esc_html(get_post_meta($id, 'slc_carousel_draggable', true));
         $pauseOnFocus = esc_html(get_post_meta($id, 'slc_carousel_pause_on_focus', true));
         $pauseOnHover = esc_html(get_post_meta($id, 'slc_carousel_pause_on_hover', true));
@@ -449,9 +377,9 @@ class LogoCarousel extends BaseController
             // for each breakpoint add it to the options array
             foreach ($breakpoints as $breakpoint) {
                 $options['breakpoints'][] = array(
-                    'breakpoint' => $breakpoint->breakpoint,
-                    'show' => $breakpoint->show,
-                    'scroll' => $breakpoint->scroll
+                    'breakpoint' => ('default' === (string) $breakpoint->breakpoint) ? 'default' : absint($breakpoint->breakpoint),
+                    'show' => max(1, absint($breakpoint->show)),
+                    'scroll' => max(1, absint($breakpoint->scroll))
                 );
             }
         }
