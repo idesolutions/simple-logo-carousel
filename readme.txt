@@ -1,5 +1,5 @@
 === Simple Logo Carousel ===
-Contributors: idesolutionsllc, ideinteractive
+Contributors: idesolutions, idesolutionsllc
 Tags: logo carousel, logo slider, carousel, slider
 Requires at least: 5.0
 Tested up to: 7.1
