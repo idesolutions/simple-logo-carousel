@@ -65,18 +65,19 @@ class Logo extends BaseController
     }
 
     /**
-     * enqueue our stylesheet and scripts
+     * enqueue our stylesheet on the logo edit screen only
      *
      * @param $hook
      */
     function admin_logo_script_and_styles($hook)
     {
-        // reference our post
-        global $post;
+        if (!in_array($hook, array('post.php', 'post-new.php'), true)) {
+            return;
+        }
 
-        // if we are in the logo custom post type
-        if ($hook == 'post-new.php' || $hook == 'post.php' && $post->post_type === 'slc_logo') {
-            wp_enqueue_style('admin_slc_stylesheet', $this->plugin_url . 'assets/admin/css/slc-admin.css');
+        $screen = function_exists('get_current_screen') ? get_current_screen() : null;
+        if ($screen && 'slc_logo' === $screen->post_type) {
+            wp_enqueue_style('admin_slc_stylesheet', $this->plugin_url . 'assets/admin/css/slc-admin.css', array(), SLC_VERSION);
         }
     }
 
@@ -102,7 +103,7 @@ class Logo extends BaseController
         }
 
         $external_url = isset($_POST['slc_external_url']) ? esc_url_raw(wp_unslash($_POST['slc_external_url'])) : '';
-        $url_target   = isset($_POST['slc_url_target']) ? Security::url_target(wp_unslash($_POST['slc_url_target'])) : '_self';
+        $url_target   = isset($_POST['slc_url_target']) ? Security::url_target(sanitize_text_field(wp_unslash($_POST['slc_url_target']))) : '_self';
         $alt_text     = isset($_POST['slc_alt_text']) ? sanitize_text_field(wp_unslash($_POST['slc_alt_text'])) : '';
         $hover_text   = isset($_POST['slc_hover_text']) ? sanitize_text_field(wp_unslash($_POST['slc_hover_text'])) : '';
 
@@ -149,20 +150,22 @@ class Logo extends BaseController
             echo wp_kses_post(get_the_post_thumbnail($post_id, array(80, 80)));
         } // if there is a link url column
         else if ('link_url' === $column) {
-            echo '<a href="' . esc_url(get_post_meta($post_id, 'slc_external_url', true)) . '" target="_blank" rel="noopener noreferrer">' . esc_html(get_post_meta($post_id, 'slc_external_url', true)) . '</a>';
+            $url = (string) get_post_meta($post_id, 'slc_external_url', true);
+            if ('' !== $url) {
+                echo '<a href="' . esc_url($url) . '" target="_blank" rel="noopener noreferrer">' . esc_html($url) . '</a>';
+            }
         } // if there is a target column
         else if ('target' === $column) {
-            $target = esc_html(get_post_meta($post_id, 'slc_url_target', true));
-            if ($target == '_blank') {
-                _e('New Window or Tab', 'simple-logo-carousel');
+            if ('_blank' === get_post_meta($post_id, 'slc_url_target', true)) {
+                esc_html_e('New Window or Tab', 'simple-logo-carousel');
             } else {
-                _e('Same Window', 'simple-logo-carousel');
+                esc_html_e('Same Window', 'simple-logo-carousel');
             }
         } // if there is a alt text column
         else if ('alt_text' === $column) {
-            $altText = esc_html(get_post_meta($post_id, 'slc_alt_text', true));
-            if ($altText == '') {
-                echo '<em>' . esc_html('No alt text was provided.', 'simple-logo-carousel') . '</em>';
+            $altText = (string) get_post_meta($post_id, 'slc_alt_text', true);
+            if ('' === $altText) {
+                echo '<em>' . esc_html__('No alt text was provided.', 'simple-logo-carousel') . '</em>';
             } else {
                 echo esc_html($altText);
             }

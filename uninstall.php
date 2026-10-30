@@ -9,6 +9,21 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
     exit;
 }
 
+// remove the capabilities we added to the administrator role
+$slc_role = get_role('administrator');
+if ($slc_role) {
+    foreach (array(
+        'edit_simple_logo_carousel', 'read_simple_logo_carousel', 'delete_simple_logo_carousel',
+        'edit_simple_logo_carousels', 'edit_others_simple_logo_carousels', 'edit_private_simple_logo_carousels',
+        'edit_published_simple_logo_carousels', 'publish_simple_logo_carousels', 'read_private_simple_logo_carousels',
+        'delete_simple_logo_carousels', 'delete_others_simple_logo_carousels', 'delete_private_simple_logo_carousels',
+        'delete_published_simple_logo_carousels', 'manage_simple_logo_carousel_terms',
+        'edit_simple_logo_carousel_terms', 'delete_simple_logo_carousel_terms', 'assign_simple_logo_carousel_terms',
+    ) as $slc_cap) {
+        $slc_role->remove_cap($slc_cap);
+    }
+}
+
 delete_option('slc_initial_carousel_options');
 delete_site_option('slc_initial_carousel_options');
 
@@ -25,16 +40,15 @@ if (!is_wp_error($terms)) {
 }
 
 foreach (array('slc_carousel', 'slc_logo') as $post_type) {
-    $post_ids = get_posts(array(
+    $slc_query = new WP_Query(array(
         'fields'         => 'ids',
-        'numberposts'    => -1,
+        'posts_per_page' => -1,
         'post_type'      => $post_type,
         'post_status'    => 'any',
         'no_found_rows'  => true,
-        'suppress_filters' => true,
     ));
 
-    foreach ($post_ids as $post_id) {
+    foreach ($slc_query->posts as $post_id) {
         wp_delete_post((int) $post_id, true);
     }
 }

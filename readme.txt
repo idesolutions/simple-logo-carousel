@@ -2,13 +2,13 @@
 Contributors: idesolutionsllc, ideinteractive
 Tags: logo carousel, logo slider, carousel, slider
 Requires at least: 5.0
-Tested up to: 6.9
+Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 1.9.5
+Stable tag: 1.9.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-A simplistic carousel to elegantly display logos. Powered by slick.
+A simple, lightweight carousel that lets you display your logos on any page or post. Powered by the slick library.
 
 == Description ==
 Simple Logo Carousel is a free WordPress plugin powered by [slick](http://kenwheeler.github.io/slick/). The plugin helps you create and manage logos that can be rearranged into carousels to be displayed anywhere on your site.
@@ -46,15 +46,33 @@ No. Simple Logo Carousel is a free plugin and at this time, will not have a prem
 
 == Changelog ==
 
-= 1.9.5 =
+= 1.9.7 =
 
-* Added "Random Order" option to randomize logo display order on each page load.
-* Updated "Tested up to" WordPress version 6.9.
+* Security: carousels and logos now use their own complete set of permissions, so users without carousel access (for example Editors) can no longer delete carousels or logos through direct links.
+* Security: the carousel preview and the admin screens now escape all output where it is printed, and translated strings are no longer used to print stored values.
+* Security: the logo link target is sanitized the same way as every other saved field.
+* Fixed: a carousel with more than one category now shows logos from any of its categories (it previously needed a logo to be in all of them).
+* Fixed: the plugin's admin styles no longer load on unrelated "Add New" screens.
+* Fixed: PHP warnings when a carousel had no saved display options, and alt text with quotes or ampersands being double-escaped.
+* Fixed: the Settings screen strings can now be translated.
+* Improved: scripts and styles are versioned so browsers pick up new files after an update.
+* Improved: visitors see nothing, instead of an error message, when a shortcode points to a missing or unpublished carousel (editors still see the message).
+* Improved: removed duplicated code, removed development files from the release package, and the uninstall now also removes the permissions the plugin added.
+* Fixed the 1.9.6 changelog heading.
+
+= 1.9.6 =
+
 * Updated plugin ownership and contributor metadata for IDE Solutions LLC.
 * Hardened post and settings saves with stricter capability, nonce, sanitization, and validation handling.
 * Hardened front-end output escaping and inline CSS value validation.
 * Added safer external-link handling and direct-access guards.
 * Updated uninstall cleanup to use WordPress APIs and the correct logo taxonomy.
+* Updated "Tested up to" WordPress version 7.1.
+
+= 1.9.5 =
+
+* Added "Random Order" option to randomize logo display order on each page load.
+* Updated "Tested up to" WordPress version 6.9.
 
 = 1.9.4 =
 

@@ -2,15 +2,15 @@
 /*
 Plugin Name: Simple Logo Carousel
 Plugin URI: https://idesolutions.io/products/simple-logo-carousel/
-Description: A simplistic carousel to elegantly display logos. Powered by <a href="http://kenwheeler.github.io/slick/">slick</a>.
-Version: 1.9.5
+Description: A simple, lightweight carousel that lets you display your logos on any page or post. Powered by <a href="http://kenwheeler.github.io/slick/">slick</a>.
+Version: 1.9.7
 Author: IDE Solutions LLC
 Author URI: https://idesolutions.io/
 License: GPLv2 or later
 License URI:  https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 5.0
-Tested up to: 6.9
 Requires PHP: 8.0
+Text Domain: simple-logo-carousel
 
 Simple Logo Carousel is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -28,6 +28,11 @@ along with Simple Logo Carousel. If not, see https://www.gnu.org/licenses/gpl-2.
 
 // prevent this file from being accessed directly
 defined( 'ABSPATH' ) or die( 'Permission denied.' );
+
+// the plugin version, used to bust browser caches when scripts and styles change
+if (!defined('SLC_VERSION')) {
+    define('SLC_VERSION', '1.9.7');
+}
 
 // load our autoload if the file exists
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {

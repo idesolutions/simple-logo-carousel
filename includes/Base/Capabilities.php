@@ -22,25 +22,52 @@ class Capabilities
     }
 
     /**
-     * create our capabilities
+     * every capability our post types and taxonomy use
+     *
+     * Each post type capability is defined explicitly (see CustomPostType) so nothing falls back to WordPress's
+     * core post capabilities: an Editor, for instance, cannot delete carousels just because they can delete posts.
+     *
+     * @return string[]
+     */
+    public static function all()
+    {
+        return array(
+            'edit_simple_logo_carousel',
+            'read_simple_logo_carousel',
+            'delete_simple_logo_carousel',
+            'edit_simple_logo_carousels',
+            'edit_others_simple_logo_carousels',
+            'edit_private_simple_logo_carousels',
+            'edit_published_simple_logo_carousels',
+            'publish_simple_logo_carousels',
+            'read_private_simple_logo_carousels',
+            'delete_simple_logo_carousels',
+            'delete_others_simple_logo_carousels',
+            'delete_private_simple_logo_carousels',
+            'delete_published_simple_logo_carousels',
+            'manage_simple_logo_carousel_terms',
+            'edit_simple_logo_carousel_terms',
+            'delete_simple_logo_carousel_terms',
+            'assign_simple_logo_carousel_terms',
+        );
+    }
+
+    /**
+     * give the administrator role our capabilities (only the ones it is missing, so nothing is rewritten on
+     * every request)
      */
     public function create_capabilities()
     {
-        // gets the administrator role
         $role = get_role('administrator');
+        if (!$role) {
+            return;
+        }
 
-        // add in the capabilities
-        $role->add_cap('edit_simple_logo_carousel');
-        $role->add_cap('read_simple_logo_carousel');
-        $role->add_cap('delete_simple_logo_carousel');
-        $role->add_cap('edit_simple_logo_carousels');
-        $role->add_cap('edit_others_simple_logo_carousels');
-        $role->add_cap('publish_simple_logo_carousels');
-        $role->add_cap('read_private_simple_logo_carousels');
-        $role->add_cap('manage_simple_logo_carousel_terms');
-        $role->add_cap('edit_simple_logo_carousel_terms');
-        $role->add_cap('delete_simple_logo_carousel_terms');
-        $role->add_cap('assign_simple_logo_carousel_terms');
+        foreach (self::all() as $capability) {
+            if (!$role->has_cap($capability)) {
+                $role->add_cap($capability);
+            }
+        }
     }
 
     /**

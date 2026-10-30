@@ -12,6 +12,7 @@ namespace PLSimpleLogoCarousel\Pages;
 
 defined( 'ABSPATH' ) || exit;
 use PLSimpleLogoCarousel\Base\BaseController;
+use PLSimpleLogoCarousel\Base\CarouselConfig;
 use PLSimpleLogoCarousel\Base\Security;
 
 class LogoCarousel extends BaseController
@@ -143,41 +144,44 @@ class LogoCarousel extends BaseController
     }
 
     /**
-     * enqueue our stylesheet and scripts
+     * enqueue our stylesheet and scripts on the carousel edit screen only
      *
      * @param $hook
      */
     function admin_logo_script_and_styles($hook)
     {
-        // reference our post
-        global $post;
-
-        if ($post) {
-            // if we are in the carousel custom post type
-            if ($hook == 'post-new.php' || $hook == 'post.php' && $post->post_type == 'slc_carousel') {
-                wp_enqueue_style('admin_slc_stylesheet', $this->plugin_url . 'assets/admin/css/slc-admin.css');
-                wp_enqueue_style('admin_logo_display_options_slc_stylesheet', $this->plugin_url . 'assets/admin/css/slc-admin-logo-display-options.css');
-                wp_enqueue_style('admin_logo_display_order_slc_stylesheet', $this->plugin_url . 'assets/admin/css/slc-admin-logo-display-order.css');
-                wp_enqueue_style('admin_logo_preview_slc_stylesheet', $this->plugin_url . 'assets/admin/css/slc-admin-preview.css');
-            }
-
-            // if we are in the carousel custom post type and not the logo custom post type
-            if ($post->post_type == 'slc_carousel' && ($hook == 'post.php' || $hook == 'post-new.php') && $post->post_type != 'slc_logo') {
-                wp_enqueue_script('jquery');
-                wp_enqueue_script('jquery-ui-core');
-                wp_enqueue_style('wp-color-picker');
-                wp_enqueue_script('wp-color-picker');
-                wp_add_inline_script('wp-color-picker', 'jQuery(document).ready(function($){$(".color-field").each( function() {$(this).wpColorPicker();});});');
-                wp_enqueue_script('admin_logo_display_options_slc_script', $this->plugin_url . 'assets/admin/js/slc-admin-logo-display-options.js', array('jquery'));
-                wp_enqueue_script('admin_logo_display_order_slc_script', $this->plugin_url . 'assets/admin/js/slc-admin-logo-display-order.js', array('jquery'));
-                wp_add_inline_script('admin_logo_display_options_slc_script', 'let contentUrl="' . $this->plugin_url . '";');
-                wp_enqueue_script('slc_slick_js', esc_url($this->plugin_url . 'assets/public/libs/slick/slick.min.js'), true);
-                wp_localize_script('slc_slick_js', 'slc_carousel_params_' . $post->ID, $this->get_carousel_options($post->ID));
-                wp_enqueue_script('slc_main_js', esc_url($this->plugin_url . 'assets/public/js/slc-main.js'), true);
-                wp_enqueue_style('slc_main_css', esc_url($this->plugin_url . 'assets/public/css/slc-main.css'));
-                wp_add_inline_style('slc_main_css', $this->get_carousel_css($post->ID));
-            }
+        if (!in_array($hook, array('post.php', 'post-new.php'), true)) {
+            return;
         }
+
+        $screen = function_exists('get_current_screen') ? get_current_screen() : null;
+        if (!$screen || 'slc_carousel' !== $screen->post_type) {
+            return;
+        }
+
+        $post = get_post();
+        $post_id = $post ? (int) $post->ID : 0;
+
+        wp_enqueue_style('admin_slc_stylesheet', $this->plugin_url . 'assets/admin/css/slc-admin.css', array(), SLC_VERSION);
+        wp_enqueue_style('admin_logo_display_options_slc_stylesheet', $this->plugin_url . 'assets/admin/css/slc-admin-logo-display-options.css', array(), SLC_VERSION);
+        wp_enqueue_style('admin_logo_display_order_slc_stylesheet', $this->plugin_url . 'assets/admin/css/slc-admin-logo-display-order.css', array(), SLC_VERSION);
+        wp_enqueue_style('admin_logo_preview_slc_stylesheet', $this->plugin_url . 'assets/admin/css/slc-admin-preview.css', array(), SLC_VERSION);
+
+        wp_enqueue_script('jquery');
+        wp_enqueue_script('jquery-ui-core');
+        wp_enqueue_style('wp-color-picker');
+        wp_enqueue_script('wp-color-picker');
+        wp_add_inline_script('wp-color-picker', 'jQuery(document).ready(function($){$(".color-field").each( function() {$(this).wpColorPicker();});});');
+        wp_enqueue_script('admin_logo_display_options_slc_script', $this->plugin_url . 'assets/admin/js/slc-admin-logo-display-options.js', array('jquery'), SLC_VERSION, true);
+        wp_enqueue_script('admin_logo_display_order_slc_script', $this->plugin_url . 'assets/admin/js/slc-admin-logo-display-order.js', array('jquery'), SLC_VERSION, true);
+        wp_add_inline_script('admin_logo_display_options_slc_script', 'var contentUrl=' . wp_json_encode(untrailingslashit($this->plugin_url)) . ';', 'before');
+
+        // the live preview uses the same scripts and styles as the front end
+        wp_enqueue_script('slc_slick_js', $this->plugin_url . 'assets/public/libs/slick/slick.min.js', array('jquery'), SLC_VERSION, true);
+        wp_localize_script('slc_slick_js', 'slc_carousel_params_' . $post_id, CarouselConfig::options($post_id));
+        wp_enqueue_script('slc_main_js', $this->plugin_url . 'assets/public/js/slc-main.js', array('jquery', 'slc_slick_js'), SLC_VERSION, true);
+        wp_enqueue_style('slc_main_css', $this->plugin_url . 'assets/public/css/slc-main.css', array(), SLC_VERSION);
+        wp_add_inline_style('slc_main_css', CarouselConfig::css($post_id));
     }
 
     /**
@@ -287,104 +291,5 @@ class LogoCarousel extends BaseController
             // output the shortcode
             echo '<input type="text" value="[simple-logo-carousel id=' . esc_attr($post_id) . ']" style="min-width:245px;" readonly />';
         }
-    }
-
-    /**
-     * get our inline css
-     *
-     * @param $id
-     * @return string
-     */
-    function get_carousel_css($id)
-    {
-        // get our carousel options
-        $titleColor = Security::color(get_post_meta($id, 'slc_carousel_title_color', true), '#222222');
-        $hoverTextColor = Security::color(get_post_meta($id, 'slc_carousel_hover_text_color', true), '#222222');
-        $hoverTextBackgroundColor = Security::color(get_post_meta($id, 'slc_carousel_hover_text_background_color', true), '#ffffff');
-        $hoverTextBackgroundColorOpacity = Security::opacity(get_post_meta($id, 'slc_carousel_hover_text_background_color_opacity', true), 0.8);
-        $slideVerticalAlignment = Security::vertical_alignment(get_post_meta($id, 'slc_carousel_slide_vertical_alignment', true));
-        $arrowImageMaxWidth = Security::css_dimension(get_post_meta($id, 'slc_carousel_arrow_image_max_width', true), '50px');
-        $arrowColor = Security::color(get_post_meta($id, 'slc_carousel_arrow_color', true), '#222222');
-        $arrowSize = Security::css_dimension(get_post_meta($id, 'slc_carousel_arrow_size', true), '50px');
-        $arrowOffset = Security::css_dimension(get_post_meta($id, 'slc_carousel_arrow_offset', true), '-10px');
-
-        // create our css output
-        $cssOutput = ".slc-carousel-id-{$id} .slc-logo-title { color: {$titleColor}; } .slc-carousel-id-{$id}.slc-logos { padding: 0 } .slc-carousel-id-{$id} .slc-hover-text { color: {$hoverTextColor}; } .slc-carousel-id-{$id} .slc-logo-container:before { background-color: {$hoverTextBackgroundColor}; opacity: {$hoverTextBackgroundColorOpacity}; } .slc-carousel-id-{$id}.slick-initialized .slick-track { display: flex; align-items: {$slideVerticalAlignment}; }";
-
-        if (get_post_meta($id, 'slc_carousel_custom_arrows', true) == 'false') {
-            $cssOutput .= " .slc-carousel-id-{$id} .slick-prev { font-size: {$arrowSize}; line-height: {$arrowSize}; color: {$arrowColor}; margin-top: calc(-{$arrowSize}/2); left:{$arrowOffset} } .slc-carousel-id-{$id} .slick-next { font-size: {$arrowSize}; line-height: {$arrowSize}; color: {$arrowColor}; margin-top: calc(-{$arrowSize}/2); right:{$arrowOffset} }";
-        } else {
-            $cssOutput .= " .slc-carousel-id-{$id} .slick-prev.slick-custom-arrow, .slc-carousel-id-{$id} .slick-next.slick-custom-arrow { max-width: {$arrowImageMaxWidth} } .slc-carousel-id-{$id} .slick-prev { left:{$arrowOffset} } .slc-carousel-id-{$id} .slick-next { right:{$arrowOffset} }";
-        }
-
-        // return our css output
-        return $cssOutput;
-    }
-
-    /**
-     * get our carousel options
-     *
-     * @param $id
-     * @return array
-     */
-    function get_carousel_options($id)
-    {
-        // get our carousel options
-        $autoplay = esc_html(get_post_meta($id, 'slc_carousel_autoplay', true));
-        $autoplaySpeed = esc_html(get_post_meta($id, 'slc_carousel_autoplay_speed', true));
-        $arrows = esc_html(get_post_meta($id, 'slc_carousel_arrows', true));
-        $prevArrow = '<button type="button" class="slick-prev">&#x276C;</button>';
-        $nextArrow = '<button type="button" class="slick-next">&#x276D;</button>';
-
-        // if we are using custom arrows
-        if (esc_html(get_post_meta($id, 'slc_carousel_custom_arrows', true)) != 'false') {
-            $prevArrow = '<img src="' . esc_url(get_post_meta($id, 'slc_carousel_left_arrow_image', true)) . '" class="slick-prev slick-custom-arrow" alt="' . esc_attr__('Arrow to go to previous logo on carousel.', 'simple-logo-carousel') . '"/>';
-            $nextArrow = '<img src="' . esc_url(get_post_meta($id, 'slc_carousel_right_arrow_image', true)) . '" class="slick-next slick-custom-arrow" alt="' . esc_attr__('Arrow to go to next logo on carousel.', 'simple-logo-carousel') . '"/>';
-        }
-
-        $centerMode = esc_html(get_post_meta($id, 'slc_carousel_center_mode', true));
-        $cssEase = Security::animation(get_post_meta($id, 'slc_carousel_animation', true));
-        $draggable = esc_html(get_post_meta($id, 'slc_carousel_draggable', true));
-        $pauseOnFocus = esc_html(get_post_meta($id, 'slc_carousel_pause_on_focus', true));
-        $pauseOnHover = esc_html(get_post_meta($id, 'slc_carousel_pause_on_hover', true));
-        $speed = esc_html(get_post_meta($id, 'slc_carousel_speed', true));
-        $randomOrder = esc_html(get_post_meta($id, 'slc_carousel_random_order', true));
-        $swipe = esc_html(get_post_meta($id, 'slc_carousel_swipe', true));
-
-        // add our carousel options into an array
-        $options['options'] = array(
-            'autoplay' => $autoplay == 'true',
-            'autoplaySpeed' => intval($autoplaySpeed),
-            'arrows' => $arrows == 'true',
-            'prevArrow' => $prevArrow,
-            'nextArrow' => $nextArrow,
-            'centerMode' => $centerMode == 'true',
-            'cssEase' => $cssEase,
-            'draggable' => $draggable == 'true',
-            'pauseOnFocus' => $pauseOnFocus == 'true',
-            'pauseOnHover' => $pauseOnHover == 'true',
-            'speed' => intval($speed),
-            'randomOrder' => $randomOrder == 'true',
-            'swipe' => $swipe == 'true'
-        );
-
-        // get our logo display options
-        $logoDisplayOptions = get_post_meta($id, 'slc_carousel_logo_display_options', true);
-
-        if ($logoDisplayOptions) {
-            $breakpoints = json_decode($logoDisplayOptions);
-
-            // for each breakpoint add it to the options array
-            foreach ($breakpoints as $breakpoint) {
-                $options['breakpoints'][] = array(
-                    'breakpoint' => ('default' === (string) $breakpoint->breakpoint) ? 'default' : absint($breakpoint->breakpoint),
-                    'show' => max(1, absint($breakpoint->show)),
-                    'scroll' => max(1, absint($breakpoint->scroll))
-                );
-            }
-        }
-
-        // return our options object
-        return $options;
     }
 }
